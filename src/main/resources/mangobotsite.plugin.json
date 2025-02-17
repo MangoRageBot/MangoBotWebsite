@@ -1,0 +1,15 @@
+{
+  "id": "mangobotsite",
+  "version": "${mangobot_version}",
+  "name": "MangoBotSite",
+  "dependencies": [
+    {
+      "id": "mangobotcore",
+      "type": "REQUIRED"
+    },
+    {
+      "id": "mangobot",
+      "type": "REQUIRED"
+    }
+  ]
+}
