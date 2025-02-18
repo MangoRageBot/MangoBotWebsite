@@ -86,11 +86,9 @@ dependencies {
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')
-    library('org.eclipse.jetty:jetty-util:11.0.16')
-    library('com.github.xmlet:htmlflow:4.7')
     library('org.eclipse.jetty:jetty-security:11.+')
-
-
+    library('org.eclipse.jetty:jetty-util:11.0.16')
+    library('org.freemarker:freemarker:2.3.31')
 }
 
 configurations.all {

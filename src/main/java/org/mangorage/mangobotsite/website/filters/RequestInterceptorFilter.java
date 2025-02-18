@@ -18,7 +18,7 @@ import static org.mangorage.mangobotsite.website.util.WebUtil.getOrCreateUserTok
 
 
 @WebFilter("/*") // Intercept all incoming requests
-public class RequestInterceptorFilter implements Filter {
+public final class RequestInterceptorFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Initialization logic if needed

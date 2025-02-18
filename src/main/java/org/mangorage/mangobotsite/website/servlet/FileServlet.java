@@ -2,7 +2,6 @@ package org.mangorage.mangobotsite.website.servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import htmlflow.HtmlFlow;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,9 +9,8 @@ import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.file.TargetFile;
 import org.mangorage.mangobotsite.website.servlet.file.UploadConfig;
+import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.ResolveString;
-import org.xmlet.htmlapifaster.EnumRelType;
-import org.xmlet.htmlapifaster.EnumTypeInputType;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
 public class FileServlet extends StandardHttpServlet {
 
@@ -98,17 +98,16 @@ public class FileServlet extends StandardHttpServlet {
 
         // Insufficient permission to delete
         if (!isOwner && delete != null) {
-            HtmlFlow.doc(response.getWriter())
-                    .html()
-                    .head()
-                    .meta().addAttr("http-equiv", "refresh").addAttr("content", "5;url=/file?id=" + id).__()
-                    .link().attrRel(EnumRelType.STYLESHEET).attrHref(getStyles()).__()
-                    .__()
-                    .body()
-                    .h1().text("Insufficient Permission").__()
-                    .h3().text("Redirecting you back in 5 seconds...").__()
-                    .__()
-                    .__();
+            processTemplate(
+                    new MapBuilder(new HashMap<>())
+                            .self(this)
+                            .put("url", "/file?id=" + id)
+                            .put("title", "Insufficient Permission")
+                            .put("message", "Insufficient Permission")
+                            .get(),
+                    "general/redirect.ftl",
+                    response.getWriter()
+            );
             return;
         }
 
@@ -126,15 +125,16 @@ public class FileServlet extends StandardHttpServlet {
                     }
                     Files.write(uploadCfgPath.resolve(id), GSON.toJson(config).getBytes());
                 } else {
-                    HtmlFlow.doc(response.getWriter())
-                            .html()
-                            .head()
-                            .link().attrRel(EnumRelType.STYLESHEET).attrHref(getStyles()).__()
-                            .__()
-                            .body()
-                            .h1().text("Invalid Target").__()
-                            .__()
-                            .__();
+                    processTemplate(
+                            new MapBuilder(new HashMap<>())
+                                    .self(this)
+                                    .put("url", "/file?id=" + id)
+                                    .put("title", "Invalid Target")
+                                    .put("message", "Invalid Target")
+                                    .get(),
+                            "general/redirect.ftl",
+                            response.getWriter()
+                    );
                     return;
                 }
             } else {
@@ -143,61 +143,32 @@ public class FileServlet extends StandardHttpServlet {
                 config.delete(uploadCfgPath, dataPath);
             }
 
-            HtmlFlow.doc(response.getWriter())
-                    .html()
-                    .head()
-                    .meta().addAttr("http-equiv", "refresh").addAttr("content", "5;url=/file?id=" + id).__()
-                    .link().attrRel(EnumRelType.STYLESHEET).attrHref(getStyles()).__()
-                    .__()
-                    .body()
-                    .h1().text("Deleted").__()
-                    .h3().text("Redirecting you back in 5 seconds...").__()
-                    .__()
-                    .__();
+            processTemplate(
+                    new MapBuilder(new HashMap<>())
+                            .self(this)
+                            .put("title", "Deleted Target")
+                            .put("message", "Deleted File")
+                            .put("url", "/file?id=" + id)
+                            .get(),
+                    "general/redirect.ftl",
+                    response.getWriter()
+            );
+
             return;
         }
 
         // Display file management page if no specific target is provided
         if (target == null) {
-            var view = HtmlFlow.doc(response.getWriter())
-                    .html()
-                    .head()
-                    .title().text("File Management").__()
-                    .link().attrRel(EnumRelType.STYLESHEET).attrHref(getStyles()).__()
-                    .__()
-                    .body()
-                    .div().attrClass("container")
-                    .h1().attrClass("title").text("File Management").__()
-                    .div().attrClass("url-section")
-                    .input().attrType(EnumTypeInputType.TEXT)
-                    .attrValue("https://mangobot.mangorage.org/file?id=" + id)
-                    .attrReadonly(true)
-                    .attrId("copyInput")
-                    .__()
-                    .button().attrClass("copy-button")
-                    .attrOnclick("document.getElementById('copyInput').select(); document.execCommand('copy');")
-                    .text("Click to copy URL to clipboard")
-                    .__().__();
-
-            // Show delete option for owner
-            if (isOwner) {
-                view = view.div().attrClass("owner-actions")
-                        .a().attrHref("/file?id=" + id + "&delete=1").text("Delete File").__().__();
-            }
-
-            // Iterate through target files and display their options
-            org.xmlet.htmlapifaster.Div<org.xmlet.htmlapifaster.Body<org.xmlet.htmlapifaster.Html<htmlflow.HtmlPage>>> finalView = view;
-            config.targets().forEach((k, targetFile) -> {
-                finalView.div().attrClass("target-section")
-                        .h4().a().attrHref("/file?id=" + id + "&target=" + targetFile.index()).text(targetFile.name()).__().__()
-                        .a().attrHref("/file?id=" + id + "&target=" + targetFile.index() + "&dl=1").text("Download").__();
-                if (isOwner) {
-                    finalView.a().attrHref("/file?id=" + id + "&target=" + targetFile.index() + "&delete=1").text("Delete").__();
-                }
-                finalView.__();
-            });
-
-            view.__().__();
+            processTemplate(
+                    new MapBuilder(new HashMap<>())
+                            .self(this)
+                            .put("id", id)
+                            .put("isOwner", isOwner)
+                            .put("config", config)
+                            .get(),
+                    "file/files.ftl",
+                    response.getWriter()
+            );
             return;
         } else if (download == null) {
             // Display file inline

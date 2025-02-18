@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 
 public record UploadConfig
         (
@@ -26,6 +27,10 @@ public record UploadConfig
             } catch (IOException ignored) {
                 ignored.printStackTrace();
             }
+        }
+
+        public List<TargetFile> targetList() {
+            return targets.values().stream().toList();
         }
 
         public boolean isAccount(HttpServletRequest request, HttpServletResponse response) {

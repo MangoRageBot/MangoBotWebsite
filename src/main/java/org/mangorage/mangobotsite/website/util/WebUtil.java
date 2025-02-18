@@ -1,9 +1,18 @@
 package org.mangorage.mangobotsite.website.util;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.Version;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jetbrains.annotations.Nullable;
+import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Map;
 import java.util.UUID;
 
 public final class WebUtil {
@@ -27,5 +36,22 @@ public final class WebUtil {
         cookie.setPath("/"); // Cookie is available to the entire site
         response.addCookie(cookie);
         return visitorId;
+    }
+
+    public static @Nullable TemplateException processTemplate(Map<String, Object> data, String templateURL, Writer writer) throws IOException {
+        // Configure FreeMarker
+        Configuration cfg = new Configuration(new Version("2.3.31"));
+        cfg.setClassForTemplateLoading(StandardHttpServlet.class, "/templates");
+        cfg.setDefaultEncoding("UTF-8");
+
+        // Load the template
+        Template template = cfg.getTemplate(templateURL);
+        try {
+            template.process(data, writer);
+        } catch (TemplateException e) {
+            e.printStackTrace();
+            return e;
+        }
+        return null;
     }
 }

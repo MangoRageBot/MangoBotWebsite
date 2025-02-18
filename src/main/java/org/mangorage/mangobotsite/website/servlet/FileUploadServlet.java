@@ -2,7 +2,6 @@ package org.mangorage.mangobotsite.website.servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import htmlflow.HtmlFlow;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,12 +11,9 @@ import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.file.TargetFile;
 import org.mangorage.mangobotsite.website.servlet.file.UploadConfig;
+import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.ResolveString;
 import org.mangorage.mangobotsite.website.util.WebUtil;
-import org.xmlet.htmlapifaster.EnumEnctypeType;
-import org.xmlet.htmlapifaster.EnumMethodType;
-import org.xmlet.htmlapifaster.EnumRelType;
-import org.xmlet.htmlapifaster.EnumTypeInputType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +23,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.UUID;
+
+import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
 @MultipartConfig
 public class FileUploadServlet extends StandardHttpServlet {
@@ -38,26 +36,13 @@ public class FileUploadServlet extends StandardHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HtmlFlow
-                .doc(resp.getWriter())
-                .html()
-                .head()
-                .title().text("File Upload Page").__()
-                .link().attrRel(EnumRelType.STYLESHEET).attrHref(getStyles()).__() // Use external CSS if desired
-                .__() // Close head
-                .body()
-                .h1().text("Upload a File").__() // Add page heading
-                .form().attrMethod(EnumMethodType.POST).attrAction("/upload").attrEnctype(EnumEnctypeType.MULTIPART_FORM_DATA)
-                .div().attrId("drop-area")
-                .p().text("Drag and drop a file here or click to select").__() // Instructions text
-                .input().attrType(EnumTypeInputType.FILE).attrId("file-input").attrName("file").__() // Hidden file input
-                .__() // Close div
-                .br().__()
-                .input().attrType(EnumTypeInputType.SUBMIT).attrId("upload").attrValue("Upload").__() // Submit button
-                .__() // Close form
-                // .hr().__()   <-- Remove or comment out this line
-                .script().attrSrc("/js/dragDropUpload.js").__() // Link to JS script
-                .__(); // Close body and document
+        processTemplate(
+                new MapBuilder(new HashMap<>())
+                        .self(this)
+                        .get(),
+                "file/upload.ftl",
+                resp.getWriter()
+        );
     }
 
     @Override
@@ -106,11 +91,6 @@ public class FileUploadServlet extends StandardHttpServlet {
         );
 
         resp.sendRedirect("/file?id=" + uploadId);
-    }
-
-    @Override
-    public boolean hasEmbed() {
-        return true;
     }
 
     @Override
