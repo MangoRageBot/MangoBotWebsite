@@ -58,6 +58,7 @@ tasks.withType(JavaExec) {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         url = 'https://maven.minecraftforge.net/'
     }
@@ -77,8 +78,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('org.mangorage:installer:3.0.27')
-    bot('org.mangorage:mangobot:11.0.14')
-    plugin('org.mangorage:mangobotplugin:11.0.66')
+    bot('org.mangorage:mangobot:11.0.15')
+
+    plugin('org.mangorage:mangobotplugin:11.0.67')
 
     compileOnly('org.mangorage:MangoBotGradle:4.0.5')
 

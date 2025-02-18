@@ -1,7 +1,8 @@
 {
   "id": "mangobotsite",
-  "version": "${mangobot_version}",
   "name": "MangoBotSite",
+  "type": "Addon",
+  "version": "${mangobot_version}",
   "dependencies": [
     {
       "id": "mangobotcore",
