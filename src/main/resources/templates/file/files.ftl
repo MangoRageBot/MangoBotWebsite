@@ -3,8 +3,22 @@
 <head>
     <title>File Management</title>
     <link rel="stylesheet" href="${self.getStyles()}">
+    <link rel="stylesheet" href="css/header.css">
+    <script src="js/header.js"></script>
 </head>
 <body>
+    <header>
+        <h1>MangoBot</h1>
+        <nav>
+            <ul>
+                <li><a href=/>Home</a></li>
+                <li><a href=/info>Info</a></li>
+                <li><a href=/upload>Upload</a></li>
+                <li><a href=/trick>Tricks</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
         <h1 class="title">File Management</h1>
         <div class="url-section">
