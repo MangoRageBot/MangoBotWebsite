@@ -175,7 +175,7 @@ public class FileServlet extends StandardHttpServlet {
             // Display file inline
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, false, header, response);
+                handleFileRequest(targetFile, id, false, header, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -184,7 +184,7 @@ public class FileServlet extends StandardHttpServlet {
             // Download file
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, true, false, response);
+                handleFileRequest(targetFile, id, true, false, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -205,14 +205,14 @@ public class FileServlet extends StandardHttpServlet {
         return null;
     }
 
-    private void handleFileRequest(TargetFile targetFile, boolean download, boolean header, HttpServletResponse response) throws IOException {
+    private void handleFileRequest(TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response) throws IOException {
 
         if (header) {
             processTemplate(
                     new MapBuilder(new HashMap<>())
                             .self(this)
                             .put("title", "MangoBot Upload")
-                            .put("contentURL", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(targetFile.path(), targetFile.index()))
+                            .put("contentURL", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(id, targetFile.index()))
                             .get(),
                     "general/header.ftl",
                     response.getWriter()
