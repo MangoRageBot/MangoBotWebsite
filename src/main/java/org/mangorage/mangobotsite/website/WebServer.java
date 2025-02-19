@@ -19,6 +19,7 @@ import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
 import org.mangorage.mangobotsite.website.servlet.AccountServlet;
+import org.mangorage.mangobotsite.website.servlet.ChatServlet;
 import org.mangorage.mangobotsite.website.servlet.FileServlet;
 import org.mangorage.mangobotsite.website.servlet.FileUploadServlet;
 import org.mangorage.mangobotsite.website.servlet.InfoServlet;

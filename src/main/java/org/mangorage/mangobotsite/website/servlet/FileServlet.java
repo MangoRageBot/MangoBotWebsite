@@ -95,6 +95,7 @@ public class FileServlet extends StandardHttpServlet {
         }
 
         boolean isOwner = config.isAccount(request, response);
+        boolean header = request.getParameter("header") != null;
 
         // Insufficient permission to delete
         if (!isOwner && delete != null) {
@@ -174,7 +175,7 @@ public class FileServlet extends StandardHttpServlet {
             // Display file inline
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, false, response);
+                handleFileRequest(targetFile, false, header, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -183,7 +184,7 @@ public class FileServlet extends StandardHttpServlet {
             // Download file
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, true, response);
+                handleFileRequest(targetFile, true, false, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -204,22 +205,35 @@ public class FileServlet extends StandardHttpServlet {
         return null;
     }
 
-    private void handleFileRequest(TargetFile targetFile, boolean download, HttpServletResponse response) throws IOException {
-        File file = new File(UPLOADS_DATA.value(), targetFile.path());
+    private void handleFileRequest(TargetFile targetFile, boolean download, boolean header, HttpServletResponse response) throws IOException {
 
-        if (file.exists() && file.isFile()) {
-            String contentType = download ? "application/octet-stream"
-                    : EXTENSIONS.getOrDefault(targetFile.extension(), "text/plain");
-            response.setContentType(contentType);
-            response.setContentLengthLong(file.length());
-            if (download) {
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + targetFile.name() + "\"");
-            }
-            try (InputStream fileInputStream = new FileInputStream(file)) {
-                fileInputStream.transferTo(response.getOutputStream());
-            }
+        if (header) {
+            processTemplate(
+                    new MapBuilder(new HashMap<>())
+                            .self(this)
+                            .put("title", "MangoBot Upload")
+                            .put("contentURL", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(targetFile.path(), targetFile.index()))
+                            .get(),
+                    "general/header.ftl",
+                    response.getWriter()
+            );
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+            File file = new File(UPLOADS_DATA.value(), targetFile.path());
+
+            if (file.exists() && file.isFile()) {
+                String contentType = download ? "application/octet-stream"
+                        : EXTENSIONS.getOrDefault(targetFile.extension(), "text/plain");
+                response.setContentType(contentType);
+                response.setContentLengthLong(file.length());
+                if (download) {
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + targetFile.name() + "\"");
+                }
+                try (InputStream fileInputStream = new FileInputStream(file)) {
+                    fileInputStream.transferTo(response.getOutputStream());
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+            }
         }
     }
 
