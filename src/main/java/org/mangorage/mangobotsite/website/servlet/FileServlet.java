@@ -208,6 +208,7 @@ public class FileServlet extends StandardHttpServlet {
     private void handleFileRequest(TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response) throws IOException {
 
         if (header) {
+            response.setContentType("text/html");
             processTemplate(
                     new MapBuilder(new HashMap<>())
                             .self(this)
