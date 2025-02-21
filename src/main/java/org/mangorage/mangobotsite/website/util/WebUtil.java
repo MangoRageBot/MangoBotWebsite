@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 import java.util.UUID;
@@ -49,9 +50,15 @@ public final class WebUtil {
         try {
             template.process(data, writer);
         } catch (TemplateException e) {
-            e.printStackTrace();
             return e;
         }
         return null;
+    }
+
+    public static String processStaticTemplateOrThrow(Map<String, Object> data, String templateURL) throws IOException {
+        StringWriter writer = new StringWriter();
+        var exception = processTemplate(data, templateURL, writer);
+        if (exception != null) throw new IllegalStateException(exception);
+        return writer.getBuffer().toString();
     }
 }

@@ -8,11 +8,10 @@ import org.mangorage.mangobotapi.core.plugin.PluginContainer;
 import org.mangorage.mangobotapi.core.plugin.PluginManager;
 import org.mangorage.mangobotapi.core.plugin.PluginMetadata;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
+import org.mangorage.mangobotsite.website.util.MapBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
@@ -28,10 +27,13 @@ public class InfoServlet extends StandardHttpServlet {
                 .map(PluginContainer::getMetadata)
                 .toList();
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("plugins", plugins);
+        processTemplate(
+                MapBuilder.of()
+                        .put("plugins", plugins)
+                        .get(),
+                "info.ftl",
+                resp.getWriter());
 
-        processTemplate(data, "Info.ftl", resp.getWriter());
     }
 
     @Override

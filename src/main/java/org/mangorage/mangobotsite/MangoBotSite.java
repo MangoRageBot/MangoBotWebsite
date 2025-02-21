@@ -1,8 +1,8 @@
 package org.mangorage.mangobotsite;
 
 import org.mangorage.mangobot.MangoBotPlugin;
+import org.mangorage.mangobotapi.core.plugin.AbstractPlugin;
 import org.mangorage.mangobotapi.core.plugin.PluginManager;
-import org.mangorage.mangobotapi.core.plugin.api.AbstractPlugin;
 import org.mangorage.mangobotapi.core.plugin.impl.Plugin;
 import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
@@ -18,5 +18,10 @@ public final class MangoBotSite extends AbstractPlugin {
         objectMap.put("trickCommand", pl.getCommandRegistry().getCommand("trick"));
         objectMap.put("jda", pl.getJDA());
         WebServer.startWebServerSafely(objectMap);
+    }
+
+    @Override
+    protected void init() {
+
     }
 }

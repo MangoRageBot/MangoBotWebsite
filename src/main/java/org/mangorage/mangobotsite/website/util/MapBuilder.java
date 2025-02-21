@@ -1,9 +1,14 @@
 package org.mangorage.mangobotsite.website.util;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public final class MapBuilder {
+    public static MapBuilder of() {
+        return new MapBuilder(new HashMap<>());
+    }
+
     private final Map<String, Object> map;
 
     public MapBuilder(Map<String, Object> map) {

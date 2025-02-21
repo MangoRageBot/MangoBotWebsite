@@ -78,9 +78,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('org.mangorage:installer:3.0.27')
-    bot('org.mangorage:mangobot:11.0.15')
+    bot('org.mangorage:mangobot:11.0.18')
 
-    plugin('org.mangorage:mangobotplugin:11.0.67')
+    plugin('org.mangorage:mangobotplugin:11.1.4')
 
     compileOnly('org.mangorage:MangoBotGradle:4.0.5')
 
@@ -114,18 +114,6 @@ tasks.named('processResources', ProcessResources).configure {
 
 MangoBotConfig {
     setJarTask(jar)
-
-    addResolver(e -> {
-        if (e.versionID2().equals("afec211f05c9dcf0b6ee44276a02f0316ea2458a-SNAPSHOT"))
-            return e.complete(
-                    e.groupID(),
-                    e.nameID(),
-                    e.versionID(),
-                    e.nameID2(),
-                    "afec211f05c9dcf0b6ee44276a02f0316ea2458a-20240330.121616-1"
-            )
-        return e.pass()
-    })
 }
 
 publishing {
@@ -133,12 +121,12 @@ publishing {
         artifact jar
 
         pom {
-            name = 'MangoBot Core Plugin'
-            description = 'The Core Plugin for MangoBot'
-            url = 'https://github.com/MangoRageBot/MangoBot'
+            name = 'MangoBot Website Plugin'
+            description = 'The Website Plugin for MangoBot'
+            url = 'https://github.com/MangoRageBot/MangoBotWebsite'
             issueManagement {
                 system = 'github'
-                url = 'https://github.com/MangoRageBot/MangoBot/issues'
+                url = 'https://github.com/MangoRageBot/MangoBotWebsite/issues'
             }
             developers {
                 developer {
