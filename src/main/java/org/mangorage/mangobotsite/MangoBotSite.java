@@ -12,16 +12,16 @@ public final class MangoBotSite extends AbstractPlugin {
     public static final String ID = "mangobotsite";
 
     public MangoBotSite() {
+
+    }
+
+    @Override
+    protected void init() {
         var pl = PluginManager.getPlugin("mangobot", MangoBotPlugin.class);
 
         ObjectMap objectMap = new ObjectMap();
         objectMap.put("trickCommand", pl.getCommandRegistry().getCommand("trick"));
         objectMap.put("jda", pl.getJDA());
         WebServer.startWebServerSafely(objectMap);
-    }
-
-    @Override
-    protected void init() {
-
     }
 }
