@@ -1,4 +1,4 @@
-package org.mangorage.mangobotsite.website.servlet.file;
+package org.mangorage.mangobotsite.website.file;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

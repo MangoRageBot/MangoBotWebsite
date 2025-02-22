@@ -1,4 +1,4 @@
-package org.mangorage.mangobotsite.website.servlet.file;
+package org.mangorage.mangobotsite.website.file;
 
 import java.io.IOException;
 import java.nio.file.Files;

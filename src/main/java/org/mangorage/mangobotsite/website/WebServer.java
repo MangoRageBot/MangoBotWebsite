@@ -15,6 +15,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
 import org.mangorage.basicutils.LogHelper;
+import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
@@ -30,6 +31,7 @@ import org.mangorage.mangobotsite.website.util.ResolveString;
 import org.mangorage.mangobotsite.website.util.ServletContextHandlerBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
 
+import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -75,6 +77,7 @@ public final class WebServer {
         server.addConnector(connector);
 
         objectMap.put(WebConstants.LOGIN_SERVICE, securityHandler);
+        objectMap.put(WebConstants.FILE_MANAGER, new FileUploadManager(Path.of("webpage-root/uploads")));
         objectMap.put("auth", securityHandler.getAuthenticator());
 
         server.start();

@@ -1,35 +1,26 @@
 package org.mangorage.mangobotsite.website.servlet;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.mangorage.mangobotsite.website.WebServer;
+import org.mangorage.mangobotsite.website.file.FileUploadManager;
+import org.mangorage.mangobotsite.website.impl.ObjectMap;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
-import org.mangorage.mangobotsite.website.servlet.file.TargetFile;
-import org.mangorage.mangobotsite.website.servlet.file.UploadConfig;
+import org.mangorage.mangobotsite.website.file.TargetFile;
+import org.mangorage.mangobotsite.website.file.UploadConfig;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
-import org.mangorage.mangobotsite.website.util.ResolveString;
+import org.mangorage.mangobotsite.website.util.WebConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
 public class FileServlet extends StandardHttpServlet {
-
-    private static final ResolveString UPLOADS_DATA = WebServer.WEBPAGE_ROOT.resolve("uploads").resolve("data");
-    private static final ResolveString UPLOADS_CONFIGS = WebServer.WEBPAGE_ROOT.resolve("uploads").resolve("cfg");
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private static final Map<String, String> EXTENSIONS = new HashMap<>();
 
@@ -77,6 +68,9 @@ public class FileServlet extends StandardHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ObjectMap map = (ObjectMap) getServletContext().getAttribute(WebConstants.WEB_OBJECT_ID);
+        FileUploadManager manager = map.get(WebConstants.FILE_MANAGER, FileUploadManager.class);
+
         // Retrieve parameters
         String id = request.getParameter("id");
         String target = request.getParameter("target"); // optional
@@ -88,7 +82,7 @@ public class FileServlet extends StandardHttpServlet {
             return;
         }
 
-        UploadConfig config = fetchConfig(id);
+        UploadConfig config = manager.getUploadConfig(id);
         if (config == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid File ID");
             return;
@@ -118,13 +112,8 @@ public class FileServlet extends StandardHttpServlet {
                 TargetFile targetFile = config.targets().get(target);
                 if (targetFile != null) {
                     config.targets().remove(target);
-                    Path uploadCfgPath = Paths.get(UPLOADS_CONFIGS.value());
-                    Path dataPath = Paths.get(UPLOADS_DATA.value());
-                    targetFile.delete(dataPath);
-                    if (!Files.exists(uploadCfgPath)) {
-                        Files.createDirectories(uploadCfgPath);
-                    }
-                    Files.write(uploadCfgPath.resolve(id), GSON.toJson(config).getBytes());
+                    manager.deleteTarget(targetFile);
+                    manager.saveUpload(config);
                 } else {
                     processTemplate(
                             new MapBuilder(new HashMap<>())
@@ -139,9 +128,7 @@ public class FileServlet extends StandardHttpServlet {
                     return;
                 }
             } else {
-                Path uploadCfgPath = Paths.get(UPLOADS_CONFIGS.value());
-                Path dataPath = Paths.get(UPLOADS_DATA.value());
-                config.delete(uploadCfgPath, dataPath);
+                manager.deleteUpload(config);
             }
 
             processTemplate(
@@ -175,7 +162,7 @@ public class FileServlet extends StandardHttpServlet {
             // Display file inline
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, id, false, header, response);
+                handleFileRequest(manager, targetFile, id, false, header, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -184,7 +171,7 @@ public class FileServlet extends StandardHttpServlet {
             // Download file
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(targetFile, id, true, false, response);
+                handleFileRequest(manager, targetFile, id, true, false, response);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -193,19 +180,7 @@ public class FileServlet extends StandardHttpServlet {
         }
     }
 
-    private UploadConfig fetchConfig(String id) {
-        Path file = Paths.get(UPLOADS_CONFIGS.value()).resolve(id);
-        if (Files.exists(file)) {
-            try (FileReader reader = new FileReader(file.toFile())) {
-                return GSON.fromJson(reader, UploadConfig.class);
-            } catch (IOException ignored) {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    private void handleFileRequest(TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response) throws IOException {
+    private void handleFileRequest(FileUploadManager manager, TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response) throws IOException {
 
         if (header) {
             response.setContentType("text/html");
@@ -219,7 +194,7 @@ public class FileServlet extends StandardHttpServlet {
                     response.getWriter()
             );
         } else {
-            File file = new File(UPLOADS_DATA.value(), targetFile.path());
+            File file = manager.getTargetPath(targetFile).toFile();
 
             if (file.exists() && file.isFile()) {
                 String contentType = download ? "application/octet-stream"
