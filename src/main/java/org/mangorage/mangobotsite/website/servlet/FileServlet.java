@@ -209,6 +209,7 @@ public class FileServlet extends StandardHttpServlet {
                             .self(this)
                             .put("title", "MangoBot Upload")
                             .put("contentURL", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(id, targetFile.index()))
+                            .put("url", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(id, targetFile.index()))
                             .get(),
                     "general/header.ftl",
                     response.getWriter()

@@ -8,4 +8,5 @@
 <meta property="og:video:height" content="720" />
 <meta property="og:url" content="${contentURL}" />
 <meta property="og:image" content="https://mangobot.mangorage.org/favicon.ico" />
+<meta http-equiv="refresh" content="0;url=${url}">
 </head>
