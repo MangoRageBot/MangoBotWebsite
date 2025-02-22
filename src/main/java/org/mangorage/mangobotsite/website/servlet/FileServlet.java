@@ -10,11 +10,15 @@ import org.mangorage.mangobotsite.website.file.TargetFile;
 import org.mangorage.mangobotsite.website.file.UploadConfig;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -214,9 +218,28 @@ public class FileServlet extends StandardHttpServlet {
 
             if (file.exists() && file.isFile()) {
                 String contentType = download ? "application/octet-stream" : EXTENSIONS.getOrDefault(targetFile.extension(), "text/plain");
+                boolean isTextFile = contentType.contains("text");
                 boolean isVideoFile = contentType.startsWith("video");
 
-                if (isVideoFile) {
+                if (isTextFile) {
+                    response.setContentType("text/html");
+                    List<String> text = new ArrayList<>();
+                    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            text.add(line);
+                        }
+                    }
+
+                    processTemplate(
+                            MapBuilder.of()
+                                    .put("lines", text)
+                                    .get(),
+                            "file.ftl",
+                            response.getWriter()
+                    );
+
+                } else if (isVideoFile) {
                     response.setContentType(contentType);
 
                     // Optional but recommended headers for video streaming:
