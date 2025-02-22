@@ -11,11 +11,18 @@ import org.mangorage.mangobotsite.website.file.UploadConfig;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
@@ -162,7 +169,7 @@ public class FileServlet extends StandardHttpServlet {
             // Display file inline
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(manager, targetFile, id, false, header, response);
+                handleFileRequest(manager, targetFile, id, false, header, response, request);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -171,7 +178,7 @@ public class FileServlet extends StandardHttpServlet {
             // Download file
             TargetFile targetFile = config.targets().get(target);
             if (targetFile != null) {
-                handleFileRequest(manager, targetFile, id, true, false, response);
+                handleFileRequest(manager, targetFile, id, true, false, response, request);
                 return;
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Target");
@@ -180,8 +187,7 @@ public class FileServlet extends StandardHttpServlet {
         }
     }
 
-    private void handleFileRequest(FileUploadManager manager, TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response) throws IOException {
-
+    private void handleFileRequest(FileUploadManager manager, TargetFile targetFile, String id, boolean download, boolean header, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if (header) {
             response.setContentType("text/html");
             processTemplate(
@@ -197,18 +203,72 @@ public class FileServlet extends StandardHttpServlet {
             File file = manager.getTargetPath(targetFile).toFile();
 
             if (file.exists() && file.isFile()) {
-                String contentType = download ? "application/octet-stream"
-                        : EXTENSIONS.getOrDefault(targetFile.extension(), "text/plain");
-                response.setContentType(contentType);
-                response.setContentLengthLong(file.length());
-                if (download) {
-                    response.setHeader("Content-Disposition", "attachment; filename=\"" + targetFile.name() + "\"");
-                }
-                try (InputStream fileInputStream = new FileInputStream(file)) {
-                    fileInputStream.transferTo(response.getOutputStream());
+                String contentType = download ? "application/octet-stream" : EXTENSIONS.getOrDefault(targetFile.extension(), "text/plain");
+                boolean isVideoFile = contentType.startsWith("video");
+
+                if (isVideoFile) {
+                    response.setContentType(contentType);
+
+                    // Optional but recommended headers for video streaming:
+                    response.setHeader("Accept-Ranges", "bytes"); // Allow range requests for seeking
+                    // Caching headers (adjust as needed):
+                    response.setHeader("Cache-Control", "public, max-age=3600"); // Example: Cache for 1 hour
+
+                    String range = request.getHeader("Range");
+                    if (range != null) {
+                        handleVideoRangeRequest(file, range, response);
+                    } else {
+                        // If no range is specified, send the whole video content
+                        response.setContentLengthLong(file.length());
+                        try (InputStream fileInputStream = new FileInputStream(file)) {
+                            fileInputStream.transferTo(response.getOutputStream());
+                        }
+                    }
+
+                } else {
+                    response.setContentType(contentType);
+                    try (InputStream fileInputStream = new FileInputStream(file)) {
+                        fileInputStream.transferTo(response.getOutputStream());
+                    }
                 }
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found.");
+            }
+        }
+    }
+
+    private void handleVideoRangeRequest(File file, String range, HttpServletResponse response) throws IOException {
+        // Parsing range
+        String[] ranges = range.replace("bytes=", "").split("-");
+        long start = Long.parseLong(ranges[0]);
+        long end = ranges.length > 1 ? Long.parseLong(ranges[1]) : file.length() - 1;
+
+        // Ensure the range is valid
+        if (start >= file.length() || end >= file.length() || start > end) {
+            response.setStatus(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
+            return;
+        }
+
+        // Set the appropriate headers for partial content
+        response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+        response.setContentType("video/mp4");
+        response.setContentLengthLong(end - start + 1);
+        response.setHeader("Content-Range", "bytes " + start + "-" + end + "/" + file.length());
+
+        // Send the video content for the range
+        try (RandomAccessFile videoFile = new RandomAccessFile(file, "r")) {
+            videoFile.seek(start);
+            byte[] buffer = new byte[8192]; // Buffer size
+            int bytesRead;
+            while ((bytesRead = videoFile.read(buffer)) != -1) {
+                if (start + bytesRead > end) {
+                    bytesRead = (int) (end - start + 1);
+                }
+                response.getOutputStream().write(buffer, 0, bytesRead);
+                start += bytesRead;
+                if (start > end) {
+                    break;
+                }
             }
         }
     }

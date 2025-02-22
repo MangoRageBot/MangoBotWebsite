@@ -53,7 +53,9 @@ public final class WebServer {
     }
 
     public static void main(String[] args) {
-        startWebServerSafely(new ObjectMap());
+        ObjectMap map = new ObjectMap();
+        map.put(WebConstants.FILE_MANAGER, new FileUploadManager(Path.of("webpage-root/uploads")));
+        startWebServerSafely(map);
     }
 
     public static void startWebServer(ObjectMap objectMap) throws Exception {
