@@ -77,7 +77,6 @@ public final class WebServer {
         server.addConnector(connector);
 
         objectMap.put(WebConstants.LOGIN_SERVICE, securityHandler);
-        objectMap.put(WebConstants.FILE_MANAGER, new FileUploadManager(Path.of("webpage-root/uploads")));
         objectMap.put("auth", securityHandler.getAuthenticator());
 
         server.start();
