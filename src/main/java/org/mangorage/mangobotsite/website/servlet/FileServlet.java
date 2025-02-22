@@ -10,17 +10,11 @@ import org.mangorage.mangobotsite.website.file.TargetFile;
 import org.mangorage.mangobotsite.website.file.UploadConfig;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +25,20 @@ public class FileServlet extends StandardHttpServlet {
 
     private static final Map<String, String> EXTENSIONS = new HashMap<>();
 
+    private static void put(String type, List<String> extensions) {
+        extensions.forEach(ext -> EXTENSIONS.put(ext, type));
+    }
+
     static {
         // Images
-        EXTENSIONS.put(".jpg", "image/jpeg");
-        EXTENSIONS.put(".jpeg", "image/jpeg");
+        put(
+                "image/jpeg",
+                List.of(
+                        ".jpg",
+                        ".jpeg"
+                )
+        );
+
         EXTENSIONS.put(".png", "image/png");
         EXTENSIONS.put(".gif", "image/gif");
         EXTENSIONS.put(".bmp", "image/bmp");
@@ -46,7 +50,13 @@ public class FileServlet extends StandardHttpServlet {
 
         // Documents
         EXTENSIONS.put(".pdf", "application/pdf");
-        EXTENSIONS.put(".txt", "text/plain");
+        put(
+                "text/plain",
+                List.of(
+                        ".txt",
+                        ".log"
+                )
+        );
         EXTENSIONS.put(".csv", "text/csv");
         EXTENSIONS.put(".json", "application/json");
         EXTENSIONS.put(".xml", "application/xml");
