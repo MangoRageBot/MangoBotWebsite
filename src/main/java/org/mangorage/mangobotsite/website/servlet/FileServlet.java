@@ -235,6 +235,7 @@ public class FileServlet extends StandardHttpServlet {
                     processTemplate(
                             MapBuilder.of()
                                     .put("lines", text)
+                                    .put("name", targetFile.name())
                                     .get(),
                             "file.ftl",
                             response.getWriter()

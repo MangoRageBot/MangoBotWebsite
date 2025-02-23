@@ -76,7 +76,7 @@
 <body>
   <div class="container">
     <div class="log-header">
-      <div class="filename">📄 latest_1.log</div>
+      <div class="filename">📄 ${name?html}</div>
       <a href="#" class="raw-button">Raw</a>
     </div>
     <div class="log-box">
