@@ -83,7 +83,7 @@
       <#list lines as line>
         <div class="line">
           <div class="line-number">${line?index + 1}</div>
-          <div class="line-text">${line}</div>
+          <div class="line-text">${line?html}</div>
         </div>
       </#list>
     </div>
