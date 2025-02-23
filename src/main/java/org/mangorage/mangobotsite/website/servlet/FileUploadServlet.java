@@ -23,7 +23,7 @@ public class FileUploadServlet extends StandardHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processTemplate(
-                new MapBuilder(new HashMap<>())
+                MapBuilder.of()
                         .self(this)
                         .get(),
                 "file/upload.ftl",

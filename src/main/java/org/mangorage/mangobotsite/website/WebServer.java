@@ -23,6 +23,7 @@ import org.mangorage.mangobotsite.website.servlet.AccountServlet;
 import org.mangorage.mangobotsite.website.servlet.ChatServlet;
 import org.mangorage.mangobotsite.website.servlet.FileServlet;
 import org.mangorage.mangobotsite.website.servlet.FileUploadServlet;
+import org.mangorage.mangobotsite.website.servlet.HomeServlet;
 import org.mangorage.mangobotsite.website.servlet.InfoServlet;
 import org.mangorage.mangobotsite.website.servlet.LoginServlet;
 import org.mangorage.mangobotsite.website.servlet.TestAuthServlet;
@@ -115,6 +116,7 @@ public final class WebServer {
                     h.setErrorHandler(new DefaultErrorHandler());
                 })
                 .addServlet(DefaultServlet.class, "/*")
+                .addServlet(HomeServlet.class, "/home")
                 .addHttpServlet(InfoServlet.class, "/info")
                 .addHttpServlet(TricksServlet.class, "/trick")
                 .addHttpServlet(FileServlet.class, "/file")

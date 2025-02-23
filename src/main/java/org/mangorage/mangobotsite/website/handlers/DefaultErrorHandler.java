@@ -14,12 +14,12 @@ public class DefaultErrorHandler extends ErrorHandler {
     @Override
     protected void handleErrorPage(HttpServletRequest request, Writer writer, int code, String message) throws IOException {
         processTemplate(
-                new MapBuilder(new HashMap<>())
+                MapBuilder.of()
                         .self(this)
                         .put("code", code)
                         .put("message", message)
                         .get(),
-                "error.ftl",
+                "general/error.ftl",
                 writer
         );
     }

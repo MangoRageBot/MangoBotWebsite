@@ -55,7 +55,7 @@ public class TricksServlet extends StandardHttpServlet {
                 Long id = Long.parseLong(guildId);
                 if (command.getTricksForGuild(id).isEmpty()) {
                     processTemplate(
-                            new MapBuilder(new HashMap<>())
+                            MapBuilder.of()
                                     .self(this)
                                     .put("title", "No Tricks Exist")
                                     .put("message", "No Tricks Exist")
@@ -68,7 +68,7 @@ public class TricksServlet extends StandardHttpServlet {
                 }
             } catch (Exception e) {
                 processTemplate(
-                        new MapBuilder(new HashMap<>())
+                        MapBuilder.of()
                                 .self(this)
                                 .put("title", "Invalid GuildID")
                                 .put("message", "Invalid GuildID")
@@ -85,7 +85,7 @@ public class TricksServlet extends StandardHttpServlet {
 
         if (trickId != null && guildId != null && trick == null) {
             processTemplate(
-                    new MapBuilder(new HashMap<>())
+                    MapBuilder.of()
                             .self(this)
                             .put("title", "Invalid Trick")
                             .put("message", "Invalid Trick")
@@ -100,7 +100,7 @@ public class TricksServlet extends StandardHttpServlet {
 
 
         processTemplate(
-                new MapBuilder(new HashMap<>())
+                MapBuilder.of()
                         .self(this)
                         .put("guildId", guildId)
                         .put("trickId", trickId)

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.mangorage.mangobotapi.core.plugin.PluginContainer;
 import org.mangorage.mangobotapi.core.plugin.PluginManager;
 import org.mangorage.mangobotapi.core.plugin.PluginMetadata;
+import org.mangorage.mangobotsite.website.Header;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 

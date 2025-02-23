@@ -115,7 +115,7 @@ public class FileServlet extends StandardHttpServlet {
         // Insufficient permission to delete
         if (!isOwner && delete != null) {
             processTemplate(
-                    new MapBuilder(new HashMap<>())
+                    MapBuilder.of()
                             .self(this)
                             .put("url", "/file?id=" + id)
                             .put("title", "Insufficient Permission")
@@ -137,7 +137,7 @@ public class FileServlet extends StandardHttpServlet {
                     manager.saveUpload(config);
                 } else {
                     processTemplate(
-                            new MapBuilder(new HashMap<>())
+                            MapBuilder.of()
                                     .self(this)
                                     .put("url", "/file?id=" + id)
                                     .put("title", "Invalid Target")
@@ -153,7 +153,7 @@ public class FileServlet extends StandardHttpServlet {
             }
 
             processTemplate(
-                    new MapBuilder(new HashMap<>())
+                    MapBuilder.of()
                             .self(this)
                             .put("title", "Deleted Target")
                             .put("message", "Deleted File")
@@ -169,7 +169,7 @@ public class FileServlet extends StandardHttpServlet {
         // Display file management page if no specific target is provided
         if (target == null) {
             processTemplate(
-                    new MapBuilder(new HashMap<>())
+                    MapBuilder.of()
                             .self(this)
                             .put("id", id)
                             .put("isOwner", isOwner)
@@ -205,13 +205,13 @@ public class FileServlet extends StandardHttpServlet {
         if (header) {
             response.setContentType("text/html");
             processTemplate(
-                    new MapBuilder(new HashMap<>())
+                    MapBuilder.of()
                             .self(this)
                             .put("title", "MangoBot Upload")
                             .put("contentURL", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(id, targetFile.index()))
                             .put("url", "https://mangobot.mangorage.org/file?id=%s&target=%s".formatted(id, targetFile.index()))
                             .get(),
-                    "general/header.ftl",
+                    "general/embed.ftl",
                     response.getWriter()
             );
         } else {

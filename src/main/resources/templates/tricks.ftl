@@ -8,17 +8,18 @@
     <script src="js/header.js"></script>
 </head>
 <body class="page-body">
+
     <header>
         <h1>MangoBot</h1>
         <nav>
             <ul>
-                <li><a href=/>Home</a></li>
-                <li><a href=/info>Info</a></li>
-                <li><a href=/upload>Upload</a></li>
-                <li><a href=/trick>Tricks</a></li>
+                <#list headers as header>
+                    <li><a href=${header.page()}>${header.text()}</a></li>
+                </#list>
             </ul>
         </nav>
     </header>
+
     <div class="container">
 
         <#if (guildId?? && trickId??)>
