@@ -1,9 +1,0 @@
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-servlet 11.0.16 jetty-servlet-11.0.16.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-security 11.0.24 jetty-security-11.0.24.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-server 11.0.24 jetty-server-11.0.24.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-http 11.0.24 jetty-http-11.0.24.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-io 11.0.24 jetty-io-11.0.24.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty jetty-util 11.0.24 jetty-util-11.0.24.jar
-https://repo.maven.apache.org/maven2/ org.slf4j slf4j-api 2.0.9 slf4j-api-2.0.9.jar
-https://repo.maven.apache.org/maven2/ org.eclipse.jetty.toolchain jetty-jakarta-servlet-api 5.0.2 jetty-jakarta-servlet-api-5.0.2.jar
-https://repo.maven.apache.org/maven2/ org.freemarker freemarker 2.3.31 freemarker-2.3.31.jar
