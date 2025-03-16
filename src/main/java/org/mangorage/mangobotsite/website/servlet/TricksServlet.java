@@ -117,7 +117,9 @@ public class TricksServlet extends StandardHttpServlet {
                             }
 
                             if (guildId != null && trickId == null) {
-                                b.put("tricks", command.getTricksForGuild(Long.parseLong(guildId)));
+                                b.put("tricks",
+                                        command.getTricksForGuild(Long.parseLong(guildId))
+                                );
                             }
 
                             if (trick != null) {
