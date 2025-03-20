@@ -262,6 +262,7 @@ public class FileServlet extends StandardHttpServlet {
 
                 } else {
                     response.setContentType(contentType);
+                    response.setHeader("Content-Disposition", "attachment; filename=\"%s\"".formatted(targetFile.name()));
                     try (InputStream fileInputStream = new FileInputStream(file)) {
                         fileInputStream.transferTo(response.getOutputStream());
                     }
