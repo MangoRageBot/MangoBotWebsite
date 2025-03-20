@@ -57,19 +57,19 @@ public final class FileUploadManager {
     }
 
     public String createUpload(List<FileStream> fileStreams, String accountId) throws IOException {
-        String uploadId = STR."\{UUID.randomUUID()}";
+        String uploadId = UUID.randomUUID().toString();
         HashMap<String, TargetFile> targets = new HashMap<>();
-        Integer index = 0;
+        int index = 0;
 
         for (FileStream filePart : fileStreams) {
-            String fileId = STR."\{UUID.randomUUID()}";
+            String fileId = UUID.randomUUID().toString();
             String fileName = Paths.get(filePart.getFileName()).getFileName().toString();
             String fileExtension = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".")) : "";
 
             targets.put(
-                    index.toString(),
+                    Integer.toString(index),
                     new TargetFile(
-                            index.toString(),
+                            index + "",
                             fileName,
                             fileId,
                             fileExtension

@@ -17,27 +17,29 @@ buildscript {
     }
 
     dependencies {
-        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
-        classpath 'org.mangorage:MangoBotGradle:5.0.4'
+        classpath 'org.mangorage:MangoBotGradle:5.0.6'
     }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
-apply plugin: 'MangoBotGradle'
 apply plugin: 'maven-publish'
+apply plugin: 'MangoBotGradle'
 
 group = 'org.mangorage'
 version = GitVersion.getGitVersion().getVersionAsString()
 
 println("Version: " + version)
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += "--enable-preview"
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
 }
 
-tasks.withType(JavaExec) {
-    jvmArgs += "--enable-preview"
+tasks.withType(JavaExec).configureEach {
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(24))
+    })
 }
 
 repositories {
@@ -62,9 +64,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('org.mangorage:installer:4.0.3')
-    bot('org.mangorage:mangobot:11.0.23')
+    bot('org.mangorage:mangobot:11.0.75')
 
-    plugin('org.mangorage:mangobotplugin:11.1.9')
+    plugin('org.mangorage:mangobotplugin:11.1.31')
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')

@@ -28,7 +28,7 @@ public final class WebUtil {
                 }
             }
         }
-        return setVisitorIdCookie(response, STR."\{UUID.randomUUID()}"); // No visitor ID cookie found
+        return setVisitorIdCookie(response, "%s".formatted(UUID.randomUUID())); // No visitor ID cookie found
     }
 
     public static String setVisitorIdCookie(HttpServletResponse response, String visitorId) {

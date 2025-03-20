@@ -43,9 +43,9 @@ public class ChatServlet extends StandardHttpServlet {
         String username = req.getParameter("username");
         String message = req.getParameter("message");
         if (username != null && !username.trim().isEmpty() && message != null && !message.trim().isEmpty()) {
-            messages.add(STR."[\{username}]: \{message}");
+            messages.add("[%s]: %s".formatted(username, message));
         }
-        resp.sendRedirect(STR."/chat?username=\{username}");
+        resp.sendRedirect("/chat?username=%s".formatted(username));
     }
 
     @Override
