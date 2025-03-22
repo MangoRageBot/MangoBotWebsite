@@ -33,7 +33,7 @@ public abstract class StandardHttpServlet extends HttpServlet {
     }
 
     public String getStyles() {
-        return useDefaultStyles() ? "css/styles.css" : "%s.css".formatted(getServletInfo());
+        return useDefaultStyles() ? "css/styles.css" : "css/%s.css".formatted(getServletInfo());
     }
 
     @Override
