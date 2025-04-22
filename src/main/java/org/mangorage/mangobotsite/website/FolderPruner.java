@@ -1,6 +1,7 @@
 package org.mangorage.mangobotsite.website;
 
-import org.mangorage.basicutils.LogHelper;
+
+import org.mangorage.commonutils.log.LogHelper;
 
 import java.io.File;
 import java.util.Arrays;

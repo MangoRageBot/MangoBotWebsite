@@ -4,10 +4,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.mangorage.mangobotapi.core.plugin.PluginContainer;
-import org.mangorage.mangobotapi.core.plugin.PluginManager;
-import org.mangorage.mangobotapi.core.plugin.PluginMetadata;
-import org.mangorage.mangobotsite.website.Header;
+
+import org.mangorage.mangobotcore.plugin.api.Metadata;
+import org.mangorage.mangobotcore.plugin.api.PluginContainer;
+import org.mangorage.mangobotcore.plugin.api.PluginManager;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 
@@ -24,7 +24,7 @@ public class InfoServlet extends StandardHttpServlet {
         // Set content type for HTML response
         resp.setContentType("text/html");
 
-        List<PluginMetadata> plugins = PluginManager.getPluginContainers().stream()
+        List<Metadata> plugins = PluginManager.getInstance().getPlugins().stream()
                 .map(PluginContainer::getMetadata)
                 .toList();
 
@@ -33,7 +33,8 @@ public class InfoServlet extends StandardHttpServlet {
                         .put("plugins", plugins)
                         .get(),
                 "info.ftl",
-                resp.getWriter());
+                resp.getWriter()
+        );
 
     }
 

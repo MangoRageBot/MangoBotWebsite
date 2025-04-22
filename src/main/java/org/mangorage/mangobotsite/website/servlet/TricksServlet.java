@@ -4,7 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.dv8tion.jda.api.JDA;
-import org.mangorage.mangobot.modules.tricks.TrickCommand;
+import org.mangorage.mangobotplugin.commands.trick.TrickCommand;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
@@ -12,7 +12,6 @@ import org.mangorage.mangobotsite.website.util.WebConstants;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
 
 import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
@@ -52,7 +51,7 @@ public class TricksServlet extends StandardHttpServlet {
 
         if (guildId != null) {
             try {
-                Long id = Long.parseLong(guildId);
+                long id = Long.parseLong(guildId);
                 if (command.getTricksForGuild(id).isEmpty()) {
                     processTemplate(
                             MapBuilder.of()

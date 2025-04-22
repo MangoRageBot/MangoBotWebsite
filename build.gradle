@@ -21,6 +21,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'org.gradlex.extra-java-module-info' version '1.12'
+}
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'MangoBotGradle'
@@ -29,6 +33,10 @@ group = 'org.mangorage'
 version = GitVersion.getGitVersion().getVersionAsString()
 
 println("Version: " + version)
+
+extraJavaModuleInfo {
+    setDeriveAutomaticModuleNamesFromFileNames(true)
+}
 
 java {
     toolchain {
@@ -64,9 +72,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('org.mangorage:installer:4.0.3')
-    bot('org.mangorage:mangobot:11.0.75')
+    bot('org.mangorage:mangobot:12.0.7')
 
-    plugin('org.mangorage:mangobotplugin:11.1.31')
+    plugin('org.mangorage:mangobotplugin:12.0.4')
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')

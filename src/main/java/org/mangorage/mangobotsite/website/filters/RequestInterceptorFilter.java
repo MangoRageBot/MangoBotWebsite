@@ -10,7 +10,8 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
-import org.mangorage.basicutils.LogHelper;
+import org.mangorage.commonutils.log.LogHelper;
+
 
 import java.io.IOException;
 
