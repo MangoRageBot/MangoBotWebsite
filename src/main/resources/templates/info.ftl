@@ -30,10 +30,10 @@
             <div class="plugin-item">
                 <h2>Plugin Details:</h2>
                 <div class="plugin-details">
-                        <p>Id: <span class="plugin-id">${plugin.id()!"Unknown"}</span></p>
-                        <p>Name: <span class="plugin-name">${plugin.name()!"Unknown"}</span></p>
-                        <p>Type: <span class="plugin-type">${plugin.type()!"Unknown"}</span></p>
-                        <p>Version: <span class="plugin-version">${plugin.version()!"Unknown"}</span></p>
+                        <p>Id: <span class="plugin-id">${plugin.getId()!"Unknown"}</span></p>
+                        <p>Name: <span class="plugin-name">${plugin.getName()!"Unknown"}</span></p>
+                        <p>Type: <span class="plugin-type">${plugin.getType()!"Unknown"}</span></p>
+                        <p>Version: <span class="plugin-version">${plugin.getVersion()!"Unknown"}</span></p>
                 </div>
             </div>
             </#list>
