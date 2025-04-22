@@ -8,4 +8,5 @@ module org.mangorage.mangobotwebsite {
     requires annotations;
 
     exports org.mangorage.mangobotsite;
+    exports org.mangorage.mangobotsite.website.file;
 }
