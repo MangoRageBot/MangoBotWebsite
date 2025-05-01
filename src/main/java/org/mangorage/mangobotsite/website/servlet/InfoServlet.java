@@ -12,7 +12,6 @@ import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
 
@@ -24,8 +23,9 @@ public class InfoServlet extends StandardHttpServlet {
         // Set content type for HTML response
         resp.setContentType("text/html");
 
-        List<Metadata> plugins = PluginManager.getInstance().getPlugins().stream()
+        var plugins = PluginManager.getInstance().getPlugins().stream()
                 .map(PluginContainer::getMetadata)
+                .map(MyMetadata::new)
                 .toList();
 
         processTemplate(
@@ -41,5 +41,23 @@ public class InfoServlet extends StandardHttpServlet {
     @Override
     public boolean useDefaultStyles() {
         return false;
+    }
+
+    public record MyMetadata(Metadata metadata) {
+        public String getName() {
+            return metadata.getName();
+        }
+
+        public String getType() {
+            return metadata.getType();
+        }
+
+        public String getId() {
+            return metadata.getId();
+        }
+
+        public String getVersion() {
+            return metadata.getVersion();
+        }
     }
 }

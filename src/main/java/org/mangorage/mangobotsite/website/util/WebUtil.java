@@ -1,5 +1,6 @@
 package org.mangorage.mangobotsite.website.util;
 
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -41,8 +42,8 @@ public final class WebUtil {
 
     public static @Nullable TemplateException processTemplate(Map<String, Object> data, String templateURL, Writer writer) throws IOException {
         // Configure FreeMarker
-        Configuration cfg = new Configuration(new Version("2.3.31"));
-        cfg.setClassForTemplateLoading(StandardHttpServlet.class, "/templates");
+        Configuration cfg = new Configuration(new Version("2.3.31"));;
+        cfg.setTemplateLoader(new ClassTemplateLoader(Thread.currentThread().getContextClassLoader(), "/templates"));
         cfg.setDefaultEncoding("UTF-8");
 
         // Load the template

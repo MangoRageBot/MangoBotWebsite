@@ -89,7 +89,7 @@ public final class WebServer {
 
     private static @NotNull ResourceHandler configureInternalResourceHandler() {
         // Create the ResourceHandler for resources in the JAR
-        var file = WebServer.class.getClassLoader().getResource(WEBPAGE_INTERNAL.value());
+        var file = Thread.currentThread().getContextClassLoader().getResource(WEBPAGE_INTERNAL.value());
         if (file == null) throw new RuntimeException("Unable to find resource directory");
 
         ResourceHandler resourceHandler = new ResourceHandler();
