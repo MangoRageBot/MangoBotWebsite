@@ -9,8 +9,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.Nullable;
-import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;

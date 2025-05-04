@@ -17,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.mangorage:MangoBotGradle:6.0.9'
+        classpath 'org.mangorage:MangoBotGradle:6.0.10'
     }
 }
 
@@ -33,6 +33,15 @@ group = 'org.mangorage'
 version = GitVersion.getGitVersion().getVersionAsString()
 
 println("Version: " + version)
+
+MangoBotConfig {
+    setJarTask(jar)
+
+    addRunConfig {
+        it.setName("runDevBot")
+        it.addArgs("--dev")
+    }
+}
 
 extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
@@ -73,10 +82,10 @@ dependencies {
 
     installer('org.mangorage:installer:4.0.15')
 
-    bot("org.mangorage:mangobotbootstrap:1.0.15")
+    bootstrap("org.mangorage:mangobotbootstrap:1.0.18")
 
-    plugin('org.mangorage:mangobot:12.0.50')
-    plugin('org.mangorage:mangobotplugin:12.0.25')
+    plugin('org.mangorage:mangobot:12.0.52')
+    plugin('org.mangorage:mangobotplugin:12.0.27')
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')
@@ -104,10 +113,6 @@ tasks.named('processResources', ProcessResources).configure {
     filesMatching(['mangobotsite.plugin.json']) {
         expand replaceProperties + [project: project]
     }
-}
-
-MangoBotConfig {
-    setJarTask(jar)
 }
 
 publishing {
