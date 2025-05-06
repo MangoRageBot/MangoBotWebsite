@@ -41,7 +41,7 @@ public class TricksServlet extends StandardHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Retrieve shared objects from the servlet context
-        var map = (ObjectMap) getServletConfig().getServletContext().getAttribute(WebConstants.WEB_OBJECT_ID);
+        var map = getObjectMap();
         var command = map.get("trickCommand", TrickCommand.class);
         var jda = map.get("jda", JDA.class);
 

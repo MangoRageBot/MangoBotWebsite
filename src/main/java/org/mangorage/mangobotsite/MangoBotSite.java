@@ -1,6 +1,5 @@
 package org.mangorage.mangobotsite;
 
-
 import org.mangorage.mangobotcore.plugin.api.MangoBotPlugin;
 import org.mangorage.mangobotcore.plugin.api.Plugin;
 import org.mangorage.mangobotcore.plugin.api.PluginManager;
@@ -8,6 +7,7 @@ import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
+import org.mangorage.mangobotsite.website.servlet.entity.EntityManager;
 import org.mangorage.mangobotsite.website.util.WebConstants;
 
 import java.nio.file.Path;
@@ -17,6 +17,7 @@ public final class MangoBotSite implements Plugin {
     public static final String ID = "mangobotsite";
 
     private final FileUploadManager fileUploadManager = new FileUploadManager(Path.of("webpage-root/uploads"));
+    private final EntityManager entityManager = new EntityManager();
 
     public MangoBotSite() {
 
@@ -26,6 +27,9 @@ public final class MangoBotSite implements Plugin {
         return fileUploadManager;
     }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
     @Override
     public String getId() {
@@ -40,6 +44,7 @@ public final class MangoBotSite implements Plugin {
         objectMap.put("trickCommand", pl.getCommandManager().getCommand("trick"));
         objectMap.put("jda", pl.getJDA());
         objectMap.put(WebConstants.FILE_MANAGER, fileUploadManager);
+        objectMap.put(WebConstants.ENTITY_MANAGER, getEntityManager());
 
         WebServer.startWebServerSafely(objectMap);
     }

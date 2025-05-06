@@ -6,6 +6,8 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mangorage.mangobotsite.website.util.WebConstants;
+
 import java.io.IOException;
 
 public abstract class StandardHttpServlet extends HttpServlet {
@@ -34,6 +36,10 @@ public abstract class StandardHttpServlet extends HttpServlet {
 
     public String getStyles() {
         return useDefaultStyles() ? "css/styles.css" : "css/%s.css".formatted(getServletInfo());
+    }
+
+    public ObjectMap getObjectMap() {
+        return (ObjectMap) getServletConfig().getServletContext().getAttribute(WebConstants.WEB_OBJECT_ID);
     }
 
     @Override

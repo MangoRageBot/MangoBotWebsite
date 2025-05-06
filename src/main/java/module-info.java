@@ -6,9 +6,14 @@ module org.mangorage.mangobotwebsite {
     requires com.google.gson;
     requires org.eclipse.jetty.servlet;
     requires org.jetbrains.annotations;
+    requires net.minecraftforge.eventbus;
+    requires net.dv8tion.jda;
 
     exports org.mangorage.mangobotsite;
     exports org.mangorage.mangobotsite.website.file;
+    exports org.mangorage.mangobotsite.website.servlet.entity;
+
+
 
     exports org.mangorage.mangobotsite.website.filters to org.eclipse.jetty.server;
     exports org.mangorage.mangobotsite.website.servlet to org.eclipse.jetty.server;
@@ -17,7 +22,12 @@ module org.mangorage.mangobotwebsite {
     exports org.mangorage.mangobotsite.website.impl to freemarker;
     exports org.mangorage.mangobotsite.website.util to freemarker;
 
-    opens org.mangorage.mangobotsite.website.servlet to freemarker;
+    exports org.mangorage.mangobotsite.website.servlet.entity.discord to com.google.gson;
+
+
+    opens org.mangorage.mangobotsite.website.servlet to freemarker, com.google.gson;
+    opens org.mangorage.mangobotsite.website.servlet.entity;
+
 
     provides org.mangorage.mangobotcore.plugin.api.Plugin with org.mangorage.mangobotsite.MangoBotSite;
     uses org.mangorage.mangobotcore.plugin.api.Plugin;

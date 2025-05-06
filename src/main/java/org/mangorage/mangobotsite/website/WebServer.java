@@ -21,6 +21,8 @@ import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
 import org.mangorage.mangobotsite.website.servlet.AccountServlet;
 
+import org.mangorage.mangobotsite.website.servlet.EntitiesServlet;
+import org.mangorage.mangobotsite.website.servlet.EntityServlet;
 import org.mangorage.mangobotsite.website.servlet.FileServlet;
 import org.mangorage.mangobotsite.website.servlet.FileUploadServlet;
 import org.mangorage.mangobotsite.website.servlet.HomeServlet;
@@ -116,7 +118,7 @@ public final class WebServer {
                     h.setErrorHandler(new DefaultErrorHandler());
                 })
                 .addServlet(DefaultServlet.class, "/*")
-                .addServlet(HomeServlet.class, "/home")
+                .addHttpServlet(HomeServlet.class, "/home")
                 .addHttpServlet(InfoServlet.class, "/info")
                 .addHttpServlet(TricksServlet.class, "/trick")
                 .addHttpServlet(FileServlet.class, "/file")
@@ -128,6 +130,8 @@ public final class WebServer {
                             new MultipartConfigElement("/tmp/uploads")
                     );
                 })
+                .addHttpServlet(EntityServlet.class, "/api/entity/*")
+                .addHttpServlet(EntitiesServlet.class, "/api/entities/*")
                 .setAttribute(WebConstants.WEB_OBJECT_ID, objectMap)
                 .addFilter(RequestInterceptorFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))
                 .configureLoginBuilder(security -> {
