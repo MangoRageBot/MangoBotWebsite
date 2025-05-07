@@ -41,7 +41,7 @@ public final class WebUtil {
     public static @Nullable TemplateException processTemplate(Map<String, Object> data, String templateURL, Writer writer) throws IOException {
         // Configure FreeMarker
         Configuration cfg = new Configuration(new Version("2.3.31"));;
-        cfg.setTemplateLoader(new ClassTemplateLoader(Thread.currentThread().getContextClassLoader(), "/templates"));
+        cfg.setTemplateLoader(new ClassTemplateLoader(WebUtil.class.getClassLoader(), "templates"));
         cfg.setDefaultEncoding("UTF-8");
 
         // Load the template
