@@ -20,7 +20,6 @@ public final class MangoBotSite implements Plugin {
     private final EntityManager entityManager = new EntityManager();
 
     public MangoBotSite() {
-
     }
 
     public FileUploadManager getFileUploadManager() {

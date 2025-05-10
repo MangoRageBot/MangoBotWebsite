@@ -1,4 +1,7 @@
 module org.mangorage.mangobotwebsite {
+
+    // version "1.0.0";
+
     requires freemarker;
 
     requires org.mangorage.mangobotplugin;
@@ -9,10 +12,14 @@ module org.mangorage.mangobotwebsite {
     requires net.minecraftforge.eventbus;
     requires net.dv8tion.jda;
 
+    // Files
+    opens templates.file;
+    opens templates.general;
+    opens templates;
+
     exports org.mangorage.mangobotsite;
     exports org.mangorage.mangobotsite.website.file;
     exports org.mangorage.mangobotsite.website.servlet.entity;
-
 
 
     exports org.mangorage.mangobotsite.website.filters to org.eclipse.jetty.server;
@@ -31,4 +38,6 @@ module org.mangorage.mangobotwebsite {
 
     provides org.mangorage.mangobotcore.plugin.api.Plugin with org.mangorage.mangobotsite.MangoBotSite;
     uses org.mangorage.mangobotcore.plugin.api.Plugin;
+
+
 }
