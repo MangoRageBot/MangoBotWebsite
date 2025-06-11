@@ -39,6 +39,7 @@ MangoBotConfig {
 
     addRunConfig {
         it.setName("runDevBot")
+        it.addArgs("--launchTarget", "mangobot")
         it.addArgs("--dev")
     }
 }
