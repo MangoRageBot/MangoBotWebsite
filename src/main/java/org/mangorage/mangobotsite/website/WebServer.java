@@ -151,7 +151,7 @@ public final class WebServer {
     }
 
     private static @NotNull ServerConnector getServerConnector(Server server) {
-        if (!Helper.isDevMode()) {
+        if (Helper.isDevMode()) {
             SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setTrustAll(true);
 
