@@ -11,6 +11,7 @@ module org.mangorage.mangobotwebsite {
     requires org.jetbrains.annotations;
     requires net.minecraftforge.eventbus;
     requires net.dv8tion.jda;
+    requires com.fasterxml.jackson.databind;
 
     // Files
     opens templates.file;

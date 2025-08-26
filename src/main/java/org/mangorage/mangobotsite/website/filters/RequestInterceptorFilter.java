@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.mangorage.commonutils.log.LogHelper;
+import org.mangorage.mangobotsite.website.servlet.StreamingServlet;
 
 
 import java.io.IOException;
@@ -28,9 +29,16 @@ public final class RequestInterceptorFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        System.out.println(request.getClass());
+
+
         if (request instanceof Request main) {
             var ip = main.getHeader("X-Forwarded-For");
             LogHelper.info("Intercepted Request from %s for %s -> https://mangobot.mangorage.org%s".formatted(ip == null ? request.getRemoteAddr() : ip, main.getMethod(), main.getOriginalURI()));
+
+            if (main.getOriginalURI().contains("mode")) {
+                new StreamingServlet().service(request, response);
+            }
         } else if (request instanceof HttpServletRequest http) {
             var ip = http.getHeader("X-Forwarded-For");
             LogHelper.info("Unknown Type (Class) From %s -> %s".formatted(ip == null ? http.getRemoteAddr() : ip, request.getClass()));

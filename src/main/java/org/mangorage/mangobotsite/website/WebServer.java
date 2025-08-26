@@ -15,6 +15,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
 import org.mangorage.commonutils.log.LogHelper;
+import org.mangorage.mangobotsite.Helper;
 import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
@@ -28,6 +29,7 @@ import org.mangorage.mangobotsite.website.servlet.FileUploadServlet;
 import org.mangorage.mangobotsite.website.servlet.HomeServlet;
 import org.mangorage.mangobotsite.website.servlet.InfoServlet;
 import org.mangorage.mangobotsite.website.servlet.LoginServlet;
+import org.mangorage.mangobotsite.website.servlet.StreamingServlet;
 import org.mangorage.mangobotsite.website.servlet.TestAuthServlet;
 import org.mangorage.mangobotsite.website.servlet.TricksServlet;
 import org.mangorage.mangobotsite.website.util.ResolveString;
@@ -93,7 +95,6 @@ public final class WebServer {
         // Create the ResourceHandler for resources in the JAR
         var file = Thread.currentThread().getContextClassLoader().getResource(WEBPAGE_INTERNAL.value());
         if (file == null) throw new RuntimeException("Unable to find resource directory");
-
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setBaseResource(Resource.newResource(file));
 
@@ -103,7 +104,6 @@ public final class WebServer {
     private static @NotNull ResourceHandler configureExternalResourceHandler() {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase(WEBPAGE_PAGE.value());
-
         return resourceHandler;
     }
 
@@ -117,7 +117,9 @@ public final class WebServer {
                 .dynamic(h -> {
                     h.setErrorHandler(new DefaultErrorHandler());
                 })
-                .addServlet(DefaultServlet.class, "/*")
+
+                .addServlet(StreamingServlet.class, "/watch")
+
                 .addHttpServlet(HomeServlet.class, "/home")
                 .addHttpServlet(InfoServlet.class, "/info")
                 .addHttpServlet(TricksServlet.class, "/trick")
@@ -149,20 +151,28 @@ public final class WebServer {
     }
 
     private static @NotNull ServerConnector getServerConnector(Server server) {
-        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        sslContextFactory.setTrustAll(true);
+        if (!Helper.isDevMode()) {
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+            sslContextFactory.setTrustAll(true);
 
-        sslContextFactory.setKeyStorePath(WEBPAGE_ROOT.resolveFully("keystore.jks")); // Path to your keystore
-        sslContextFactory.setKeyStorePassword("mango12"); // Keystore password
-        sslContextFactory.setKeyManagerPassword("mango12"); // Key manager password
+            sslContextFactory.setKeyStorePath(WEBPAGE_ROOT.resolveFully("keystore.jks")); // Path to your keystore
+            sslContextFactory.setKeyStorePassword("mango12"); // Keystore password
+            sslContextFactory.setKeyManagerPassword("mango12"); // Key manager password
 
-        // HTTPS Connector
-        ServerConnector sslConnector = new ServerConnector(
-                server,
-                sslContextFactory
-        );
+            // HTTPS Connector
+            ServerConnector sslConnector = new ServerConnector(
+                    server,
+                    sslContextFactory
+            );
 
-        sslConnector.setPort(443); // HTTPS port
-        return sslConnector;
+            sslConnector.setPort(1443); // HTTPS port
+            return sslConnector;
+        } else {
+            ServerConnector connector = new ServerConnector(
+                    server
+            );
+            connector.setPort(18080);
+            return connector;
+        }
     }
 }
