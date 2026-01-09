@@ -1,5 +1,6 @@
 package org.mangorage.mangobotsite;
 
+import org.mangorage.bootstrap.api.loader.IMangoLoader;
 import org.mangorage.mangobotcore.plugin.api.MangoBotPlugin;
 import org.mangorage.mangobotcore.plugin.api.Plugin;
 import org.mangorage.mangobotcore.plugin.api.PluginManager;

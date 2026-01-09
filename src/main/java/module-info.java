@@ -12,6 +12,7 @@ module org.mangorage.mangobotwebsite {
     requires net.minecraftforge.eventbus;
     requires net.dv8tion.jda;
     requires com.fasterxml.jackson.databind;
+    requires org.mangorage.bootstrap;
 
     // Files
     opens templates.file;
