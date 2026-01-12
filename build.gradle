@@ -89,10 +89,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     installer('org.mangorage:installer:4.0.26')
-    bootstrap("org.mangorage:mangobotbootstrap:1.0.68")
+    bootstrap("org.mangorage:mangobotbootstrap:1.0.72")
 
-    plugin('org.mangorage:mangobot:12.0.76')
-    plugin('org.mangorage:mangobotplugin:12.0.46')
+    plugin('org.mangorage:mangobot:12.0.80')
+    plugin('org.mangorage:mangobotplugin:12.0.47')
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')

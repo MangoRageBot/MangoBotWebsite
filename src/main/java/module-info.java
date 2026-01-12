@@ -1,7 +1,4 @@
 module org.mangorage.mangobotwebsite {
-
-    // version "1.0.0";
-
     requires freemarker;
 
     requires org.mangorage.mangobotplugin;
@@ -38,8 +35,6 @@ module org.mangorage.mangobotwebsite {
     opens org.mangorage.mangobotsite.website.servlet.entity;
 
 
-    provides org.mangorage.mangobotcore.plugin.api.Plugin with org.mangorage.mangobotsite.MangoBotSite;
-    uses org.mangorage.mangobotcore.plugin.api.Plugin;
-
-
+    provides org.mangorage.mangobotcore.api.plugin.v1.Plugin with org.mangorage.mangobotsite.MangoBotSite;
+    uses org.mangorage.mangobotcore.api.plugin.v1.Plugin;
 }

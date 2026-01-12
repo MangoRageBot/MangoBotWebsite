@@ -1,9 +1,9 @@
 package org.mangorage.mangobotsite;
 
-import org.mangorage.bootstrap.api.loader.IMangoLoader;
-import org.mangorage.mangobotcore.plugin.api.MangoBotPlugin;
-import org.mangorage.mangobotcore.plugin.api.Plugin;
-import org.mangorage.mangobotcore.plugin.api.PluginManager;
+
+import org.mangorage.mangobotcore.api.plugin.v1.MangoBotPlugin;
+import org.mangorage.mangobotcore.api.plugin.v1.Plugin;
+import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.file.FileUploadManager;

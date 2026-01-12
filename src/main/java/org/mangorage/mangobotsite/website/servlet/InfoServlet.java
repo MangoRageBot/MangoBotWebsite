@@ -5,9 +5,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.mangorage.mangobotcore.plugin.api.Metadata;
-import org.mangorage.mangobotcore.plugin.api.PluginContainer;
-import org.mangorage.mangobotcore.plugin.api.PluginManager;
+import org.mangorage.mangobotcore.api.plugin.v1.Metadata;
+import org.mangorage.mangobotcore.api.plugin.v1.PluginContainer;
+import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 
