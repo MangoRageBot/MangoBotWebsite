@@ -41,7 +41,7 @@ public final class MangoBotSite implements Plugin {
         var pl = PluginManager.getInstance().getPlugin("mangobot").getInstance(MangoBot.class);
 
         ObjectMap objectMap = new ObjectMap();
-        objectMap.put("trickCommand", pl.getCommandManager().getCommand("trick"));
+        objectMap.put("trickManager", pl.getTrickManager());
         objectMap.put("jda", pl.getJDA());
         objectMap.put(WebConstants.FILE_MANAGER, fileUploadManager);
         objectMap.put(WebConstants.ENTITY_MANAGER, getEntityManager());

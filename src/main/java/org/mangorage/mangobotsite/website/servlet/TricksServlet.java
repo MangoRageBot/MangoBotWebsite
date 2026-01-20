@@ -5,11 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.dv8tion.jda.api.JDA;
 import org.mangorage.mangobotplugin.commands.trick.Trick;
-import org.mangorage.mangobotplugin.commands.trick.TrickCommand;
-import org.mangorage.mangobotsite.website.impl.ObjectMap;
+import org.mangorage.mangobotplugin.commands.trick.TrickManager;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
-import org.mangorage.mangobotsite.website.util.WebConstants;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Comparator;
@@ -44,7 +42,7 @@ public class TricksServlet extends StandardHttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Retrieve shared objects from the servlet context
         var map = getObjectMap();
-        var command = map.get("trickCommand", TrickCommand.class);
+        var trickManager = map.get("trickManager", TrickManager.class);
         var jda = map.get("jda", JDA.class);
 
         resp.setContentType("text/html");
@@ -54,7 +52,7 @@ public class TricksServlet extends StandardHttpServlet {
         if (guildId != null) {
             try {
                 long id = Long.parseLong(guildId);
-                if (command.getTricksForGuild(id).isEmpty()) {
+                if (trickManager.getTricksForGuild(id).isEmpty()) {
                     processTemplate(
                             MapBuilder.of()
                                     .self(this)
@@ -82,7 +80,7 @@ public class TricksServlet extends StandardHttpServlet {
             }
         }
 
-        var trick = guildId != null && trickId != null ? command.getTrick(trickId, Long.parseLong(guildId)) : null;
+        var trick = guildId != null && trickId != null ? trickManager.getTrickForGuildByName(Long.parseLong(guildId), trickId) : null;
 
         if (trickId != null && guildId != null && trick == null) {
             processTemplate(
@@ -110,7 +108,7 @@ public class TricksServlet extends StandardHttpServlet {
                             if (guildId == null) {
                                 b.put(
                                         "guilds",
-                                        command.getGuilds()
+                                        trickManager.getAllGuilds()
                                                 .stream()
                                                 .map(id -> new Guild(id.toString(), getGuild(jda, id)))
                                                 .toList()
@@ -119,7 +117,7 @@ public class TricksServlet extends StandardHttpServlet {
 
                             if (guildId != null) {
                                 b.put("tricks",
-                                        command.getTricksForGuild(Long.parseLong(guildId))
+                                        trickManager.getTricksForGuild(Long.parseLong(guildId))
                                                 .stream()
                                                 .sorted(Comparator.comparing(Trick::getTrickID))
                                                 .toList()

@@ -93,8 +93,8 @@ dependencies {
 
     launchtarget("org.mangorage:mangobotlaunchtarget:0.1.8")
 
-    plugin('org.mangorage:mangobot:12.0.89')
-    plugin('org.mangorage:mangobotplugin:12.0.50')
+    plugin('org.mangorage:mangobot:12.0.96')
+    plugin('org.mangorage:mangobotplugin:12.0.57')
 
     library('org.eclipse.jetty:jetty-server:11.0.16')
     library('org.eclipse.jetty:jetty-servlet:11.0.16')
