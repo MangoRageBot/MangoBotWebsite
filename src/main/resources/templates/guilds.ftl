@@ -25,7 +25,7 @@
             </a>
             <ul class="nav-menu">
                 <#list headers as header>
-                    <li><a href="${header.page()}" class="nav-link<#if header.active!false> active</#if>">${header.text()}</a></li>
+                    <li><a href="${header.page()}" class="nav-link<#if header.active()!false> active</#if>">${header.text()}</a></li>
                 </#list>
             </ul>
             <a href="https://discord.mangorage.org/" target="_blank" class="nav-cta">
@@ -100,7 +100,7 @@
                         <div id="tricks-list" class="tricks-list">
                             <#if tricks?? && (tricks?size > 0)>
                                 <#list tricks as trick>
-                                <a href="/trick?guildId=${selectedGuild.getId()}&trickId=${trick.getId()!trick.getName()}" class="trick-item trick-link">
+                                <a href="/tricks?guildId=${selectedGuild.getId()}&trickId=${trick.getId()!trick.getName()}" class="trick-item trick-link">
                                     <span class="trick-name">${trick.getName()!"unknown"}</span>
                                     <span class="trick-meta">
                                         <span class="trick-type">${trick.getType()!"NORMAL"}</span>
@@ -171,9 +171,9 @@
     <script>
         function selectGuild(guildId) {
             if (guildId) {
-                window.location.href = '/guilds?guild=' + encodeURIComponent(guildId);
+                window.location.href = '/tricks?guild=' + encodeURIComponent(guildId);
             } else {
-                window.location.href = '/guilds';
+                window.location.href = '/tricks';
             }
         }
     </script>

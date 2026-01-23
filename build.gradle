@@ -1,5 +1,3 @@
-import org.mangorage.mangobotgradle.util.GitVersion
-
 
 buildscript {
     repositories {
@@ -18,7 +16,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.mangorage:MangoBotGradle:6.0.22'
+        classpath 'org.mangorage:MangoBotGradle:6.0.24'
     }
 }
 
@@ -31,7 +29,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'MangoBotGradle'
 
 group = 'org.mangorage'
-version = GitVersion.getGitVersion().getVersionAsString()
+version = "0.0.0"
 
 println("Version: " + version)
 

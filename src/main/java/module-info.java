@@ -12,9 +12,10 @@ module org.mangorage.mangobotwebsite {
     requires org.mangorage.bootstrap;
 
     // Files
-    opens templates.file;
-    opens templates.general;
     opens templates;
+
+    // TODO: Deal with it
+    exports org.mangorage.mangobotsite.website.servlet.data;
 
     exports org.mangorage.mangobotsite;
     exports org.mangorage.mangobotsite.website.file;
