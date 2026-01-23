@@ -8,6 +8,7 @@ import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.data.GuildsData;
 import org.mangorage.mangobotsite.website.servlet.data.HeaderData;
+import org.mangorage.mangobotsite.website.servlet.data.TrickData;
 import org.mangorage.mangobotsite.website.servlet.data.TrickInfoData;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebUtil;
@@ -23,20 +24,12 @@ public final class TricksServlet extends StandardHttpServlet {
             new HeaderData("/contact", "Contact", true)
     );
 
-    public record TrickData(
-            String getId,
-            String getName,
-            String description,
-            String getType
-    ) {}
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final var plugin = PluginManager.getInstance().getPlugin("mangobot").getInstance(MangoBot.class);
         final var manager = plugin.getTrickManager();
-        final var trick = manager.getTricksForGuild(manager.getAllGuilds().getFirst()).getFirst();
 
-        final var selectedGuildId = req.getParameter("guild");
-        final var selectedTrickId = req.getParameter("trick");
+        final var selectedGuildId = req.getParameter("guildId");
+        final var selectedTrickId = req.getParameter("trickId");
 
         final var guildsList = GuildsData.get(manager.getAllGuilds(), plugin.getJDA());
 
@@ -45,7 +38,14 @@ public final class TricksServlet extends StandardHttpServlet {
                 .put("headers", headers);
 
         if (selectedTrickId != null) {
-
+            final var trick = manager.getTrickForGuildByName(Long.parseLong(selectedGuildId), selectedTrickId);
+            mapBuilder.put("trick", new TrickData(trick));
+            WebUtil.processTemplate(
+                    mapBuilder.get(),
+                    "tricks.ftl",
+                    resp.getWriter()
+            );
+            return;
         } else {
             if (selectedGuildId != null) {
                 mapBuilder.put("selectedGuild", guildsList.stream().filter(g -> g.getId().equals(selectedGuildId)).findFirst().orElse(null));

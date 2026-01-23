@@ -171,7 +171,7 @@
     <script>
         function selectGuild(guildId) {
             if (guildId) {
-                window.location.href = '/tricks?guild=' + encodeURIComponent(guildId);
+                window.location.href = '/tricks?guildId=' + encodeURIComponent(guildId);
             } else {
                 window.location.href = '/tricks';
             }
