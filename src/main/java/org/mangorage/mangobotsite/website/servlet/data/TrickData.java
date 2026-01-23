@@ -15,6 +15,10 @@ public final class TrickData {
         return Objects.requireNonNullElse(trick.getTrickID(), "");
     }
 
+    public String getGuildId() {
+        return trick.getGuildID() + "";
+    }
+
     public String getName() {
         return Objects.requireNonNullElse(trick.getTrickID(), "Unknown Trick");
     }

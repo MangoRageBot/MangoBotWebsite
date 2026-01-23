@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Guild ID</span>
-                                    <span class="detail-value detail-mono">${guildId!"N/A"}</span>
+                                    <span class="detail-value detail-mono">${trick.getGuildId()!"N/A"}</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Owner</span>
