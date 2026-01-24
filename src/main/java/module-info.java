@@ -28,7 +28,7 @@ module org.mangorage.mangobotwebsite {
     exports org.mangorage.mangobotsite.website.servlet to org.eclipse.jetty.server;
 
     exports org.mangorage.mangobotsite.website to freemarker;
-    exports org.mangorage.mangobotsite.website.impl to freemarker;
+    exports org.mangorage.mangobotsite.website.servlet.impl to freemarker;
     exports org.mangorage.mangobotsite.website.util to freemarker;
 
 

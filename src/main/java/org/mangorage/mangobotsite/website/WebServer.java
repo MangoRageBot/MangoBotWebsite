@@ -3,7 +3,6 @@ package org.mangorage.mangobotsite.website;
 
 
 import jakarta.servlet.DispatcherType;
-import jakarta.servlet.MultipartConfigElement;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -15,17 +14,16 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
 import org.mangorage.mangobotcore.api.util.log.LogHelper;
 import org.mangorage.mangobotsite.Helper;
-import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
-import org.mangorage.mangobotsite.website.impl.ObjectMap;
+import org.mangorage.mangobotsite.website.servlet.CommandsServlet;
+import org.mangorage.mangobotsite.website.util.ObjectMap;
 import org.mangorage.mangobotsite.website.servlet.HomeServlet;
 import org.mangorage.mangobotsite.website.servlet.TricksServlet;
 import org.mangorage.mangobotsite.website.util.ResolveString;
 import org.mangorage.mangobotsite.website.util.ServletContextHandlerBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
 
-import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -104,6 +102,7 @@ public final class WebServer {
 
                 .addHttpServlet(HomeServlet.class, "/home")
                 .addServlet(TricksServlet.class, "/tricks")
+                .addServlet(CommandsServlet.class, "/commands")
 
                 .setAttribute(WebConstants.WEB_OBJECT_ID, objectMap)
                 .addFilter(RequestInterceptorFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))

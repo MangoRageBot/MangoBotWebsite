@@ -1,4 +1,4 @@
-package org.mangorage.mangobotsite.website.impl;
+package org.mangorage.mangobotsite.website.util;
 
 import java.util.HashMap;
 

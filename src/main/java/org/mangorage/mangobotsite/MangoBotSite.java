@@ -7,7 +7,7 @@ import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.WebServer;
 import org.mangorage.mangobotsite.website.file.FileUploadManager;
-import org.mangorage.mangobotsite.website.impl.ObjectMap;
+import org.mangorage.mangobotsite.website.util.ObjectMap;
 import org.mangorage.mangobotsite.website.util.WebConstants;
 
 import java.nio.file.Path;

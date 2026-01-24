@@ -6,17 +6,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.WebsiteConstants;
-import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
+import org.mangorage.mangobotsite.website.servlet.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.data.GuildsData;
 import org.mangorage.mangobotsite.website.servlet.data.category.CategoryData;
-import org.mangorage.mangobotsite.website.servlet.data.category.CategoryItemData;
 import org.mangorage.mangobotsite.website.servlet.data.trick.TrickData;
 import org.mangorage.mangobotsite.website.servlet.data.trick.TrickInfoData;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebUtil;
 
 import java.io.IOException;
-import java.util.List;
 
 public final class TricksServlet extends StandardHttpServlet {
 

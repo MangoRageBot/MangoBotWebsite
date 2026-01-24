@@ -6,7 +6,7 @@ import jakarta.servlet.Servlet;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
+import org.mangorage.mangobotsite.website.servlet.impl.StandardHttpServlet;
 
 import java.util.EnumSet;
 import java.util.function.Consumer;
