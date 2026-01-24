@@ -106,75 +106,22 @@
                     </div>
 
                     <aside class="trick-sidebar">
-                        <div class="sidebar-card">
-                            <h3>Details</h3>
-                            <div class="detail-list">
-                                <div class="detail-item">
-                                    <span class="detail-label">Guild</span>
-                                    <span class="detail-value">${guildName!"Unknown"}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Guild ID</span>
-                                    <span class="detail-value detail-mono">${trick.getGuildId()!"N/A"}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Owner</span>
-                                    <span class="detail-value">${trick.getOwnerName()!"Unknown"}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Owner ID</span>
-                                    <span class="detail-value detail-mono">${trick.getOwnerId()!"N/A"}</span>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="sidebar-card">
-                            <h3>Statistics</h3>
-                            <div class="detail-list">
-                                <div class="detail-item">
-                                    <span class="detail-label">Times Used</span>
-                                    <span class="detail-value">${trick.getUsageCount()!0}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Created</span>
-                                    <span class="detail-value">${trick.getCreatedDate()!"Unknown"}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Last Edited</span>
-                                    <span class="detail-value">${trick.getLastEditedDate()!"Never"}</span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Last Modified By</span>
-                                    <span class="detail-value">${trick.getLastModifiedByName()!"N/A"}</span>
+                        <#list categories as category>
+                            <div class="sidebar-card">
+                                <h3>${category.name()}</h3>
+                                <div class="detail-list">
+                                    <#list category.info() as item>
+                                        <div class="detail-item">
+                                            <span class="detail-label">${item.name()}</span>
+                                            <span class="detail-value${item.bold()?then(' detail-bold','')}">
+                                                ${item.value()}
+                                            </span>
+                                        </div>
+                                    </#list>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="sidebar-card">
-                            <h3>Settings</h3>
-                            <div class="detail-list">
-                                <div class="detail-item">
-                                    <span class="detail-label">Locked</span>
-                                    <span class="detail-value">
-                                        <#if trick.isLocked()!false>
-                                            <span class="status-yes">Yes</span>
-                                        <#else>
-                                            <span class="status-no">No</span>
-                                        </#if>
-                                    </span>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Suppress Embeds</span>
-                                    <span class="detail-value">
-                                        <#if trick.isSuppressEmbeds()!false>
-                                            <span class="status-yes">Yes</span>
-                                        <#else>
-                                            <span class="status-no">No</span>
-                                        </#if>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        </#list>
 
                         <a href="/tricks?guildId=${selectedGuildId!""}" class="btn btn-secondary btn-full">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

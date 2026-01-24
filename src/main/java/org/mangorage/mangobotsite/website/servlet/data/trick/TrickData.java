@@ -1,4 +1,4 @@
-package org.mangorage.mangobotsite.website.servlet.data;
+package org.mangorage.mangobotsite.website.servlet.data.trick;
 
 import org.mangorage.mangobotplugin.commands.trick.Trick;
 
