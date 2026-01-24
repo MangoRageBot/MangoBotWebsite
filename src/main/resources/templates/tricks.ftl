@@ -50,11 +50,11 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"/>
                     </svg>
-                    <a href="/guilds">Guilds</a>
+                    <a href="/tricks">Guilds</a>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"/>
                     </svg>
-                    <a href="/guilds?guild=${guildId!""}">${guildName!"Guild"}</a>
+                    <a href="/tricks?guildId=${selectedGuildId!""}">${guildName!"Guild"}</a>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6"/>
                     </svg>
@@ -176,7 +176,7 @@
                             </div>
                         </div>
 
-                        <a href="/guilds?guild=${guildId!""}" class="btn btn-secondary btn-full">
+                        <a href="/tricks?guildId=${selectedGuildId!""}" class="btn btn-secondary btn-full">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 12H5M12 19l-7-7 7-7"/>
                             </svg>

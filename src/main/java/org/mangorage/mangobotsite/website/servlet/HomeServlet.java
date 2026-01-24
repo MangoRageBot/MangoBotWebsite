@@ -7,6 +7,7 @@ import org.mangorage.mangobotcore.api.plugin.v1.PluginContainer;
 import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.Header;
+import org.mangorage.mangobotsite.website.WebsiteConstants;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.data.HeaderData;
 import org.mangorage.mangobotsite.website.servlet.data.PluginData;
@@ -17,20 +18,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class HomeServlet extends StandardHttpServlet {
-    private static final List<HeaderData> headers = List.of(
-            new HeaderData("/home", "Home", true),
-            new HeaderData("/home#plugins", "Plugins", true),
-            new HeaderData("/tricks", "Tricks", true),
-            new HeaderData("/contact", "Contact", true)
-    );
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
         WebUtil.processTemplate(
                 MapBuilder.of()
                         .put("pluginCount", 1)
                         .put("guildCount", 12)
-                        .put("headers", headers)
+                        .put("headers", WebsiteConstants.headers)
                         .put(
                                 "plugins",
                                 PluginManager.getInstance().getPlugins().stream()

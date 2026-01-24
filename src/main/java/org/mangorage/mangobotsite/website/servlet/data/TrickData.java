@@ -28,7 +28,20 @@ public final class TrickData {
     }
 
     public String getContent() {
-        return Objects.requireNonNullElse(trick.getContent(), "No content");
+        switch (trick.getType()) {
+            case NORMAL -> {
+                return trick.getContent();
+            }
+            case SCRIPT -> {
+                return trick.getScript();
+            }
+            case ALIAS -> {
+                return trick.getAliasTarget();
+            }
+            default -> {
+                return "N/A";
+            }
+        }
     }
 
     public boolean isLocked() {
