@@ -19,17 +19,7 @@ import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.impl.ObjectMap;
-import org.mangorage.mangobotsite.website.servlet.AccountServlet;
-
-import org.mangorage.mangobotsite.website.servlet.EntitiesServlet;
-import org.mangorage.mangobotsite.website.servlet.EntityServlet;
-import org.mangorage.mangobotsite.website.servlet.FileServlet;
-import org.mangorage.mangobotsite.website.servlet.FileUploadServlet;
 import org.mangorage.mangobotsite.website.servlet.HomeServlet;
-import org.mangorage.mangobotsite.website.servlet.InfoServlet;
-import org.mangorage.mangobotsite.website.servlet.LoginServlet;
-import org.mangorage.mangobotsite.website.servlet.StreamingServlet;
-import org.mangorage.mangobotsite.website.servlet.TestAuthServlet;
 import org.mangorage.mangobotsite.website.servlet.TricksServlet;
 import org.mangorage.mangobotsite.website.util.ResolveString;
 import org.mangorage.mangobotsite.website.util.ServletContextHandlerBuilder;
@@ -111,22 +101,10 @@ public final class WebServer {
                     h.setErrorHandler(new DefaultErrorHandler());
                 })
 
-                .addServlet(StreamingServlet.class, "/watch")
 
                 .addHttpServlet(HomeServlet.class, "/home")
-                .addHttpServlet(InfoServlet.class, "/info")
-                .addHttpServlet(TricksServlet.class, "/trick")
-                .addHttpServlet(FileServlet.class, "/file")
-                .addHttpServlet(TestAuthServlet.class, "/testAuth")
-                .addHttpServlet(LoginServlet.class, "/login")
-                .addHttpServlet(AccountServlet.class, "/account")
-                .addHttpServlet(FileUploadServlet.class, "/upload", h -> {
-                    h.getRegistration().setMultipartConfig(
-                            new MultipartConfigElement("/tmp/uploads")
-                    );
-                })
-                .addHttpServlet(EntityServlet.class, "/api/entity/*")
-                .addHttpServlet(EntitiesServlet.class, "/api/entities/*")
+                .addServlet(TricksServlet.class, "/tricks")
+
                 .setAttribute(WebConstants.WEB_OBJECT_ID, objectMap)
                 .addFilter(RequestInterceptorFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))
                 .configureLoginBuilder(security -> {

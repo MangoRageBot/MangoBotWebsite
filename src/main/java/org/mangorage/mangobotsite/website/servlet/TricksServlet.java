@@ -3,144 +3,72 @@ package org.mangorage.mangobotsite.website.servlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import net.dv8tion.jda.api.JDA;
-import org.mangorage.mangobotplugin.commands.trick.Trick;
-import org.mangorage.mangobotplugin.commands.trick.TrickManager;
+import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
+import org.mangorage.mangobotplugin.entrypoint.MangoBot;
+import org.mangorage.mangobotsite.website.WebsiteConstants;
 import org.mangorage.mangobotsite.website.impl.StandardHttpServlet;
+import org.mangorage.mangobotsite.website.servlet.data.GuildsData;
+import org.mangorage.mangobotsite.website.servlet.data.TrickData;
+import org.mangorage.mangobotsite.website.servlet.data.TrickInfoData;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
+import org.mangorage.mangobotsite.website.util.WebUtil;
+
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Comparator;
-import java.util.Date;
 
-import static org.mangorage.mangobotsite.website.util.WebUtil.processTemplate;
+public final class TricksServlet extends StandardHttpServlet {
 
-public class TricksServlet extends StandardHttpServlet {
-
-    public record Guild(String id, String name) {}
-
-
-    public static String getUser(JDA jda, long id) {
-        var user = jda.getUserById(id);
-        return user != null ? user.getName() : "";
-    }
-
-    public static String getGuild(JDA jda, long id) {
-        var guild = jda.getGuildById(id);
-        return guild != null ? guild.getName() : "";
-    }
-
-    private static long getLong(String value) {
-        try {
-            return Long.valueOf(value);
-        } catch (Exception ignored) {
-            return -1;
-        }
-    }
-
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Retrieve shared objects from the servlet context
-        var map = getObjectMap();
-        var trickManager = map.get("trickManager", TrickManager.class);
-        var jda = map.get("jda", JDA.class);
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
 
-        resp.setContentType("text/html");
-        var guildId = req.getParameter("guildId");
-        var trickId = req.getParameter("trickId");
+        final var plugin = PluginManager.getInstance().getPlugin("mangobot").getInstance(MangoBot.class);
+        final var manager = plugin.getTrickManager();
 
-        if (guildId != null) {
-            try {
-                long id = Long.parseLong(guildId);
-                if (trickManager.getTricksForGuild(id).isEmpty()) {
-                    processTemplate(
-                            MapBuilder.of()
-                                    .self(this)
-                                    .put("title", "No Tricks Exist")
-                                    .put("message", "No Tricks Exist")
-                                    .put("url", "/trick")
-                                    .get(),
-                            "general/redirect.ftl",
-                            resp.getWriter()
-                    );
-                    return;
-                }
-            } catch (Exception e) {
-                processTemplate(
-                        MapBuilder.of()
-                                .self(this)
-                                .put("title", "Invalid GuildID")
-                                .put("message", "Invalid GuildID")
-                                .put("url", "/trick")
-                                .get(),
-                        "general/redirect.ftl",
-                        resp.getWriter()
-                );
-                return;
-            }
-        }
+        final var selectedGuildId = req.getParameter("guildId");
+        final var selectedTrickId = req.getParameter("trickId");
 
-        var trick = guildId != null && trickId != null ? trickManager.getTrickForGuildByName(Long.parseLong(guildId), trickId) : null;
+        final var guildsList = GuildsData.get(manager.getAllGuilds(), plugin.getJDA());
 
-        if (trickId != null && guildId != null && trick == null) {
-            processTemplate(
-                    MapBuilder.of()
-                            .self(this)
-                            .put("title", "Invalid Trick")
-                            .put("message", "Invalid Trick")
-                            .put("url", "/trick?guildId=%s".formatted(guildId))
-                            .get(),
-                    "general/redirect.ftl",
+
+        final MapBuilder mapBuilder = MapBuilder.of()
+                .put("headers", WebsiteConstants.headers);
+
+        if (selectedTrickId != null) {
+            final var trick = manager.getTrickForGuildByName(Long.parseLong(selectedGuildId), selectedTrickId);
+            mapBuilder.put("trick", new TrickData(trick));
+            mapBuilder.put("selectedGuildId", selectedGuildId);
+            WebUtil.processTemplate(
+                    mapBuilder.get(),
+                    "tricks.ftl",
                     resp.getWriter()
             );
             return;
+        } else {
+            if (selectedGuildId != null) {
+                mapBuilder.put("selectedGuild", guildsList.stream().filter(g -> g.getId().equals(selectedGuildId)).findFirst().orElse(null));
+                mapBuilder.put("selectedGuildId", selectedGuildId);
+                mapBuilder.put("tricks",
+                        TrickInfoData.get(manager, Long.parseLong(selectedGuildId))
+                );
+            }
+
+            mapBuilder.put(
+                    "guilds",
+                    guildsList
+            );
+
+
+            WebUtil.processTemplate(
+                    mapBuilder.get(),
+                    "guilds.ftl",
+                    resp.getWriter()
+            );
         }
 
 
 
-        processTemplate(
-                MapBuilder.of()
-                        .self(this)
-                        .put("guildId", guildId)
-                        .put("trickId", trickId)
-                        .dynamic(b -> {
 
-                            if (guildId == null) {
-                                b.put(
-                                        "guilds",
-                                        trickManager.getAllGuilds()
-                                                .stream()
-                                                .map(id -> new Guild(id.toString(), getGuild(jda, id)))
-                                                .toList()
-                                );
-                            }
-
-                            if (guildId != null) {
-                                b.put("tricks",
-                                        trickManager.getTricksForGuild(Long.parseLong(guildId))
-                                                .stream()
-                                                .sorted(Comparator.comparing(Trick::getTrickID))
-                                                .toList()
-                                );
-                            }
-
-                            if (trick != null) {
-                                b.put("trick", trick);
-                                b.put("ownerName", getUser(jda, trick.getOwnerID()));
-                                b.put("guildName", getGuild(jda, Long.parseLong(guildId)));
-                                b.put("lastUserName", getUser(jda, trick.getLastUserEdited()));
-                                b.put("lastEdited", Date.from(Instant.ofEpochMilli(trick.getLastEdited())).toString());
-                                b.put("created", Date.from(Instant.ofEpochMilli(trick.getCreated())).toString());
-                            }
-                        })
-                        .get(),
-                "tricks.ftl",
-                resp.getWriter()
-        );
-    }
-
-    @Override
-    public boolean useDefaultStyles() {
-        return false;
     }
 }
+
+
