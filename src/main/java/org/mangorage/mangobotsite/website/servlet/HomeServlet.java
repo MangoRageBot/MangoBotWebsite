@@ -25,10 +25,12 @@ public class HomeServlet extends StandardHttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
+        final var JDA = PluginManager.getInstance().getPlugin("mangobot").getInstance(MangoBot.class).getJDA();
+
         WebUtil.processTemplate(
                 MapBuilder.of()
-                        .put("pluginCount", 1)
-                        .put("guildCount", 12)
+                        .put("pluginCount", PluginManager.getInstance().getPlugins().size())
+                        .put("guildCount", JDA.getGuilds().size())
                         .put("headers", WebsiteConstants.headers)
                         .put(
                                 "plugins",
