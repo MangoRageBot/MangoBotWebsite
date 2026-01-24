@@ -837,6 +837,10 @@ section {
     border-radius: var(--radius-xl);
 }
 
+.logo-icon img {
+    vertical-align: middle;
+}
+
 .cta-card h2 {
     font-size: 1.75rem;
     font-weight: 700;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guilds - MangoBot</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,9 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="/home" class="nav-logo">
-                <span class="logo-icon">🥭</span>
+                <span class="logo-icon">
+                    <img src="images/favicon.ico" alt="Logo" width="48">
+                </span>
                 <span class="logo-text">MangoBot</span>
             </a>
             <ul class="nav-menu">
@@ -155,7 +157,9 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <span class="logo-icon">🥭</span>
+                    <span class="logo-icon">
+                        <img src="images/favicon.ico" alt="Logo" width="48">
+                    </span>
                     <span class="logo-text">MangoBot</span>
                 </div>
                 <p class="footer-text">Developed with passion by MangoRage</p>
