@@ -9,6 +9,7 @@ public final class WebsiteConstants {
             new HeaderData("/home", "Home", true),
             new HeaderData("/home#plugins", "Plugins", true),
             new HeaderData("/tricks", "Tricks", true),
-            new HeaderData("/home#contact", "Contact", true)
+            new HeaderData("/home#contact", "Contact", true),
+            new HeaderData("/commands", "Commands", true)
     );
 }
