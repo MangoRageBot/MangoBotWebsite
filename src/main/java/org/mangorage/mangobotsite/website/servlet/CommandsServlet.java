@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.mangorage.mangobotcore.api.command.v1.AbstractCommand;
 import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
+import org.mangorage.mangobotsite.website.WebsiteConstants;
 import org.mangorage.mangobotsite.website.servlet.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
 import org.mangorage.mangobotsite.website.util.WebUtil;
@@ -20,6 +21,7 @@ public final class CommandsServlet extends StandardHttpServlet {
 
         WebUtil.processTemplate(
                 MapBuilder.of()
+                        .put("headers", WebsiteConstants.headers)
                         .put("commandDataList",
                                 dispatcher.getAllRegisteredCommands()
                                         .stream()
