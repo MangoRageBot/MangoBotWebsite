@@ -20,17 +20,42 @@
             margin: 4px 0;
             }
 
-            .param {
-            color: #7fd7ff;
+            /* Command name tooltip */
+            .cmd {
             cursor: help;
             position: relative;
+            color: #ffd37f;
+            }
+
+            .cmd .tooltip {
+            display: none;
+            position: absolute;
+            background: #222;
+            border: 1px solid #555;
+            padding: 6px;
+            border-radius: 4px;
+            top: 1.5em;
+            left: 0;
+            white-space: nowrap;
+            z-index: 100;
+            }
+
+            .cmd:hover .tooltip {
+            display: block;
+            }
+
+            /* Parameter tooltip */
+            .param {
+            cursor: help;
+            position: relative;
+            color: #7fd7ff;
             }
 
             .param.required {
             color: #ff7f7f;
             }
 
-            .tooltip {
+            .param .tooltip {
             display: none;
             position: absolute;
             background: #222;
@@ -46,6 +71,7 @@
             .param:hover .tooltip {
             display: block;
             }
+
         </style>
     </head>
     <body>
@@ -60,8 +86,22 @@
 
                 <#list data.commandParts() as cmd>
                     <div class="command">
-                        <span>${cmd.getName()}</span>
 
+                        <!-- Command name with tooltip -->
+                        <#if cmd.getCommandNotes()?has_content>
+                            <span class="cmd">
+                                ${cmd.getName()}
+                                <span class="tooltip">
+                                    <#list cmd.getCommandNotes() as note>
+                                        <div>• ${note}</div>
+                                    </#list>
+                                </span>
+                            </span>
+                        <#else>
+                            <span>${cmd.getName()}</span>
+                        </#if>
+
+                        <!-- Parameters -->
                         <#list cmd.getParameters() as p>
                             <span class="param <#if p.isRequired()>required</#if>">
                                 <#if p.isRequired()>
@@ -80,6 +120,7 @@
                                 </span>
                             </span>
                         </#list>
+
                     </div>
                 </#list>
 
@@ -88,4 +129,3 @@
 
     </body>
 </html>
-
