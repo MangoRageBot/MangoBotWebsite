@@ -23,7 +23,7 @@
         </a>
         <ul class="nav-menu">
             <#list headers as header>
-                <li><a href="${header.page()}" class="nav-link<#if header.active!false> active</#if>">${header.text()}</a></li>
+                <li><a href="${header.page()}" class="nav-link<#if header.active()!false> active</#if>">${header.text()}</a></li>
             </#list>
         </ul>
         <a href="https://discord.mangorage.org/" target="_blank" class="nav-cta">
