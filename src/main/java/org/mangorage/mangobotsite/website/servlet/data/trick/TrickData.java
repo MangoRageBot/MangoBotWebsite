@@ -27,22 +27,7 @@ public final class TrickData {
         return trick.getType() == null ? "N/A" : trick.getType().name();
     }
 
-    public String getContent() {
-        switch (trick.getType()) {
-            case NORMAL -> {
-                return trick.getContent();
-            }
-            case SCRIPT -> {
-                return trick.getScript();
-            }
-            case ALIAS -> {
-                return trick.getAliasTarget();
-            }
-            default -> {
-                return "N/A";
-            }
-        }
-    }
+    public String getContent() { return trick.getContent(); }
 
     public boolean isLocked() {
         return trick.isLocked();
