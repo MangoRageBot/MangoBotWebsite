@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangoBot - Discord Bot</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=${.now?long}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -240,10 +240,6 @@
                     <span class="logo-text">MangoBot</span>
                 </div>
                 <p class="footer-text">Developed with passion by MangoRage</p>
-                <div class="footer-links">
-                    <#list headers as header>
-                        <a href="${header.page()}">${header.text()}</a>
-                    </#list>
                 </div>
             </div>
         </div>

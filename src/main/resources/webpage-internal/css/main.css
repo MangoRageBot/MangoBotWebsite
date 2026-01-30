@@ -57,7 +57,7 @@ body {
     background-color: var(--color-bg);
     color: var(--color-text);
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: clip;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -103,6 +103,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 }
 
 .nav-logo {
@@ -895,23 +896,24 @@ section {
 
 @media (max-width: 768px) {
     .nav-menu {
-        position: fixed;
-        top: 72px;
+        position: absolute;
+        top: 100%;
         left: 0;
         right: 0;
         background: var(--color-bg);
         border-bottom: 1px solid var(--color-border);
         flex-direction: column;
-        padding: 16px;
+        padding: 0 16px;
         gap: 4px;
-        transform: translateY(-100%);
+        max-height: 0;
+        overflow: hidden;
         opacity: 0;
-        visibility: hidden;
         transition: all var(--transition-base);
     }
 
     .nav-menu.active {
-        transform: translateY(0);
+        max-height: 400px;
+        padding: 16px;
         opacity: 1;
         visibility: visible;
     }
@@ -1408,18 +1410,83 @@ html {
 }
 
 @media (max-width: 768px) {
+    .page-header {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    .header-content h1 {
+        font-size: 2rem;
+    }
+    .commands-content {
+        padding: 40px 0 60px;
+    }
+    .command-block {
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+    .command-block > h2 {
+        font-size: 1.25rem;
+    }
     .command {
         font-size: 0.85rem;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
     }
-
+    .cmd,
+    .param {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
     .param .tooltip,
     .cmd .tooltip {
-        left: auto;
-        right: 0;
-        min-width: 250px;
+        position: fixed;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        max-width: calc(100vw - 32px);
+        min-width: auto;
+        width: max-content;
+        top: auto;
+        bottom: 20px;
+    }
+}
+
+    .commands-content {
+        padding: 40px 0 60px;
     }
 
     .command-block {
         padding: 16px;
+        margin-bottom: 24px;
     }
-}
+
+    .command-block > h2 {
+        font-size: 1.25rem;
+    }
+
+    .command {
+        font-size: 0.85rem;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+    }
+
+    .cmd,
+    .param {
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+
+    .param .tooltip,
+    .cmd .tooltip {
+        position: fixed;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        max-width: calc(100vw - 32px);
+        min-width: auto;
+        width: max-content;
+        top: auto;
+        bottom: 20px;
+    }
