@@ -15,6 +15,9 @@ import java.io.IOException;
 public final class CommandsServlet extends StandardHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
         final var plugin = PluginManager.getInstance().getPlugin("mangobot").getInstance(MangoBot.class);
         final var dispatcher = plugin.getCommandDispatcher();
         final var command = dispatcher.getCommand("trick").buildCommandParts();
