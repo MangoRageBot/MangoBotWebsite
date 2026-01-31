@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${trick.getName()!"Trick"} - MangoBot</title>
+    <title>MangoBot - Discord Bot</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=${.now?long}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="js/main.js" defer></script>
-    <meta name="og:title" content="${trick.getName()!"Trick"} - MangoBot">
-    <meta name="og:description" content="View trick details for ${trick.getName()!"this trick"} on MangoBot.">
+    <meta name="og:title" content="MangoBot">
+    <meta name="og:description" content="The Official MangoBot Discord Bot.">
     <meta name="og:image" content="https://mangobot.mangorage.org/pink-sheep.png">
-    <meta name="og:url" content="https://mangobot.mangorage.org/trick?guildId=${guildId!""}&trickId=${trick.getId()!""}">
+    <meta name="og:url" content="https://mangobot.mangorage.org/">
     <meta name="og:type" content="website">
 </head>
 <body>
@@ -147,11 +147,6 @@
                     <span class="logo-text">MangoBot</span>
                 </div>
                 <p class="footer-text">Developed with passion by MangoRage</p>
-                <div class="footer-links">
-                    <#list headers as header>
-                        <a href="${header.page()}">${header.text()}</a>
-                    </#list>
-                </div>
             </div>
         </div>
     </footer>
