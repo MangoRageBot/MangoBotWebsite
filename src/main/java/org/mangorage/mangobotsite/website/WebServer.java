@@ -100,7 +100,7 @@ public final class WebServer {
     }
 
     private static @NotNull ServerConnector getServerConnector(Server server) {
-        if (!MangoBotCore.isDevMode()) {
+        if (MangoBotCore.isDevMode()) {
             SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setTrustAll(true);
 
