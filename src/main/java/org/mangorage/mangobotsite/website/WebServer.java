@@ -100,28 +100,8 @@ public final class WebServer {
     }
 
     private static @NotNull ServerConnector getServerConnector(Server server) {
-        if (MangoBotCore.isDevMode()) {
-            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-            sslContextFactory.setTrustAll(true);
-
-            sslContextFactory.setKeyStorePath(WEBPAGE_ROOT.resolveFully("keystore.jks")); // Path to your keystore
-            sslContextFactory.setKeyStorePassword("mango12"); // Keystore password
-            sslContextFactory.setKeyManagerPassword("mango12"); // Key manager password
-
-            // HTTPS Connector
-            ServerConnector sslConnector = new ServerConnector(
-                    server,
-                    sslContextFactory
-            );
-
-            sslConnector.setPort(1443); // HTTPS port
-            return sslConnector;
-        } else {
-            ServerConnector connector = new ServerConnector(
-                    server
-            );
-            connector.setPort(18080);
-            return connector;
-        }
+        ServerConnector connector = new ServerConnector(server);
+        connector.setPort(18080);
+        return connector;
     }
 }
