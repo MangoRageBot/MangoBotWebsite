@@ -48,7 +48,7 @@ public final class TricksServlet extends StandardHttpServlet {
             return;
         } else {
             if (selectedGuildId != null) {
-                mapBuilder.put("selectedGuild", guildsList.stream().filter(g -> g.getId().equals(selectedGuildId)).findFirst().orElse(null));
+                mapBuilder.put("selectedGuild", guildsList.stream().filter(g -> g.getId().equals(selectedGuildId)).findFirst().orElse(new GuildsData("N/A", "N/A", "N/A", -1)));
                 mapBuilder.put("selectedGuildId", selectedGuildId);
                 mapBuilder.put("tricks",
                         TrickInfoData.get(manager, Long.parseLong(selectedGuildId))
