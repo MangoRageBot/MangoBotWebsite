@@ -6,24 +6,15 @@ import org.mangorage.mangobotcore.api.plugin.v1.Plugin;
 import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
 import org.mangorage.mangobotsite.website.WebServer;
-import org.mangorage.mangobotsite.website.file.FileUploadManager;
 import org.mangorage.mangobotsite.website.util.ObjectMap;
-import org.mangorage.mangobotsite.website.util.WebConstants;
-
-import java.nio.file.Path;
 
 @MangoBotPlugin(id = MangoBotSite.ID)
 public final class MangoBotSite implements Plugin {
     public static final String ID = "mangobotsite";
 
-    private final FileUploadManager fileUploadManager = new FileUploadManager(Path.of("webpage-root/uploads"));
-
     public MangoBotSite() {
     }
 
-    public FileUploadManager getFileUploadManager() {
-        return fileUploadManager;
-    }
 
     @Override
     public String getId() {
@@ -37,7 +28,6 @@ public final class MangoBotSite implements Plugin {
         ObjectMap objectMap = new ObjectMap();
         objectMap.put("trickManager", pl.getTrickManager());
         objectMap.put("jda", pl.getJDA());
-        objectMap.put(WebConstants.FILE_MANAGER, fileUploadManager);
 
         WebServer.startWebServerSafely(objectMap);
     }

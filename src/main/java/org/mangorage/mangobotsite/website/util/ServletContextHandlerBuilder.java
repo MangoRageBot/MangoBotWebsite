@@ -16,8 +16,6 @@ public final class ServletContextHandlerBuilder {
         return new ServletContextHandlerBuilder(handler);
     }
 
-
-    private final ConstraintSecurityHandlerBuilder securityHandlerBuilder = ConstraintSecurityHandlerBuilder.create();
     private final ServletContextHandler handler;
 
     ServletContextHandlerBuilder(ServletContextHandler handler) {
@@ -67,15 +65,6 @@ public final class ServletContextHandlerBuilder {
 
     public ServletContextHandlerBuilder addHttpServlet(Class<? extends StandardHttpServlet> servletClass, String pathSpec, Consumer<ServletHolder> consumer) {
         return addServlet(servletClass, pathSpec, consumer);
-    }
-
-    // OPTIONAL
-    public void configureLoginBuilder(Consumer<ConstraintSecurityHandlerBuilder> consumer) {
-        consumer.accept(securityHandlerBuilder);
-    }
-
-    public ConstraintSecurityHandler getConstraintSecurityHandler() {
-        return securityHandlerBuilder.getConstraintSecurityHandler();
     }
 
     public ServletContextHandler getServletContextHandler() {

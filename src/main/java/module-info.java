@@ -13,6 +13,8 @@ module org.mangorage.mangobotwebsite {
 
     // Files
     opens templates;
+    opens templates.general;
+
 
     // TODO: Deal with it
     exports org.mangorage.mangobotsite.website.servlet.data;
@@ -21,8 +23,6 @@ module org.mangorage.mangobotwebsite {
 
 
     exports org.mangorage.mangobotsite;
-
-    exports org.mangorage.mangobotsite.website.file;
 
     exports org.mangorage.mangobotsite.website.filters to org.eclipse.jetty.server;
     exports org.mangorage.mangobotsite.website.servlet to org.eclipse.jetty.server;
@@ -34,6 +34,7 @@ module org.mangorage.mangobotwebsite {
 
 
     opens org.mangorage.mangobotsite.website.servlet to freemarker, com.google.gson;
+
 
     provides org.mangorage.mangobotcore.api.plugin.v1.Plugin with org.mangorage.mangobotsite.MangoBotSite;
     uses org.mangorage.mangobotcore.api.plugin.v1.Plugin;

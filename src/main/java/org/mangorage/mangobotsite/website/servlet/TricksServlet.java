@@ -5,13 +5,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mangorage.mangobotcore.api.plugin.v1.PluginManager;
 import org.mangorage.mangobotplugin.entrypoint.MangoBot;
-import org.mangorage.mangobotsite.website.WebsiteConstants;
 import org.mangorage.mangobotsite.website.servlet.impl.StandardHttpServlet;
 import org.mangorage.mangobotsite.website.servlet.data.GuildsData;
 import org.mangorage.mangobotsite.website.servlet.data.category.CategoryData;
 import org.mangorage.mangobotsite.website.servlet.data.trick.TrickData;
 import org.mangorage.mangobotsite.website.servlet.data.trick.TrickInfoData;
 import org.mangorage.mangobotsite.website.util.MapBuilder;
+import org.mangorage.mangobotsite.website.util.WebConstants;
 import org.mangorage.mangobotsite.website.util.WebUtil;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import java.io.IOException;
 public final class TricksServlet extends StandardHttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
@@ -31,8 +32,7 @@ public final class TricksServlet extends StandardHttpServlet {
         final var guildsList = GuildsData.get(manager.getAllGuilds(), plugin.getJDA());
 
 
-        final MapBuilder mapBuilder = MapBuilder.of()
-                .put("headers", WebsiteConstants.headers);
+        final MapBuilder mapBuilder = MapBuilder.of();
 
         if (selectedTrickId != null) {
             final var trick = manager.getTrickForGuildByName(Long.parseLong(selectedGuildId), selectedTrickId);
@@ -67,10 +67,6 @@ public final class TricksServlet extends StandardHttpServlet {
                     resp.getWriter()
             );
         }
-
-
-
-
     }
 }
 

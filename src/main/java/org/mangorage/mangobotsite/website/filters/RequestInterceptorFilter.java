@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.mangorage.mangobotcore.api.util.log.LogHelper;
 
-
 import java.io.IOException;
-
-import static org.mangorage.mangobotsite.website.util.WebUtil.getOrCreateUserToken;
 
 
 @WebFilter("/*") // Intercept all incoming requests
@@ -26,10 +23,7 @@ public final class RequestInterceptorFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-        System.out.println(request.getClass());
-
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
 
         if (request instanceof Request main) {
             var ip = main.getHeader("X-Forwarded-For");
@@ -42,11 +36,15 @@ public final class RequestInterceptorFilter implements Filter {
             LogHelper.info("Unknown Type (Class) From %s -> %s".formatted(request.getRemoteAddr(), request.getClass()));
         }
 
-        if (response instanceof HttpServletResponse resp && request instanceof HttpServletRequest req) {
-            getOrCreateUserToken(req, resp); // Either Get it or create a new one!
+        try {
+            chain.doFilter(request, response);
+        } catch (Exception e) {
+            if (response instanceof HttpServletResponse r)
+                r.sendError(
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        e.getLocalizedMessage()
+                );
         }
-
-        chain.doFilter(request, response);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package org.mangorage.mangobotsite.website;
 
-
-
 import jakarta.servlet.DispatcherType;
-import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -12,8 +9,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
+import org.mangorage.mangobotcore.api.plugin.MangoBotCore;
 import org.mangorage.mangobotcore.api.util.log.LogHelper;
-import org.mangorage.mangobotsite.Helper;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.servlet.CommandsServlet;
@@ -23,9 +20,7 @@ import org.mangorage.mangobotsite.website.servlet.TricksServlet;
 import org.mangorage.mangobotsite.website.util.ResolveString;
 import org.mangorage.mangobotsite.website.util.ServletContextHandlerBuilder;
 import org.mangorage.mangobotsite.website.util.WebConstants;
-
 import java.util.EnumSet;
-import java.util.Set;
 
 public final class WebServer {
     public static final ResolveString WEBPAGE_INTERNAL = new ResolveString("webpage-internal");
@@ -49,7 +44,6 @@ public final class WebServer {
 
         var builder = configureBuilders(objectMap);
         var contextHandler = builder.getServletContextHandler();
-        var securityHandler = builder.getConstraintSecurityHandler();
 
         // Combine the handlers (file, jar resource handlers, and security)
         HandlerCollection handlers = new HandlerCollection();
@@ -57,15 +51,10 @@ public final class WebServer {
         handlers.addHandler(configureExternalResourceHandler());
         handlers.addHandler(contextHandler);
 
-        securityHandler.setHandler(handlers);
-        server.setHandler(securityHandler);
-
 
         ServerConnector connector = getServerConnector(server);
         server.addConnector(connector);
-
-        objectMap.put(WebConstants.LOGIN_SERVICE, securityHandler);
-        objectMap.put("auth", securityHandler.getAuthenticator());
+        server.setHandler(handlers);
 
         server.start();
         LogHelper.info("Webserver Started");
@@ -95,33 +84,23 @@ public final class WebServer {
         builder
                 .setContextPath("/")
                 .setResourceBase(WEBPAGE_PAGE.value())
-                .dynamic(h -> {
-                    h.setErrorHandler(new DefaultErrorHandler());
+
+                .dynamic(handler -> {
+                    handler.setErrorHandler(new DefaultErrorHandler());
                 })
 
-
                 .addHttpServlet(HomeServlet.class, "/home")
-                .addServlet(TricksServlet.class, "/tricks")
-                .addServlet(CommandsServlet.class, "/commands")
+                .addHttpServlet(TricksServlet.class, "/tricks")
+                .addHttpServlet(CommandsServlet.class, "/commands")
 
                 .setAttribute(WebConstants.WEB_OBJECT_ID, objectMap)
-                .addFilter(RequestInterceptorFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST))
-                .configureLoginBuilder(security -> {
-                    security
-                            .setFullValidate(true)
-                            .setAuthenticator(new BasicAuthenticator())
-                            .addUser("admin", "pass", Set.of("admin"))
-                            .lock(
-                                Set.of("admin"),
-                                "/testAuth"
-                            );
-                });
+                .addFilter(RequestInterceptorFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
         return builder;
     }
 
     private static @NotNull ServerConnector getServerConnector(Server server) {
-        if (Helper.isDevMode()) {
+        if (!MangoBotCore.isDevMode()) {
             SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setTrustAll(true);
 

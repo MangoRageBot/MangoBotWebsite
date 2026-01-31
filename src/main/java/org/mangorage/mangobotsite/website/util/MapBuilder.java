@@ -1,7 +1,5 @@
 package org.mangorage.mangobotsite.website.util;
 
-import org.mangorage.mangobotsite.website.Header;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -15,7 +13,7 @@ public final class MapBuilder {
 
     private MapBuilder(Map<String, Object> map) {
         this.map = map;
-        put("headers", Header.DEFAULT);
+        put("headers", WebConstants.HEADERS);
     }
 
     public MapBuilder self(Object object) {
