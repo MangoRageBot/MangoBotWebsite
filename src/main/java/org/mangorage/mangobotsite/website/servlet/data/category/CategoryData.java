@@ -12,8 +12,7 @@ import java.util.List;
 public record CategoryData(String name, List<CategoryItemData> info) {
     static String time(long epochMilli) {
         // Convert milliseconds to ZonedDateTime in Los Angeles timezone
-        ZonedDateTime zdt = Instant.ofEpochMilli(epochMilli)
-                .atZone(ZoneId.of("America/Los_Angeles"));
+        ZonedDateTime zdt = Instant.ofEpochMilli(epochMilli).atZone(ZoneId.systemDefault());
 
         // Create formatter for: Jan 1, 1900 @ 12:00
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy @ HH:mm (zzz)");
