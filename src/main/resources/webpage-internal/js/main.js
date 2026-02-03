@@ -1,7 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initParticles();
+    initSmoothScroll();
+    initAnimations();
+    initCounters();
+    initMobileTooltips();
+    initConsoleMessage();
+});
+
+function initNavigation() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+    const navbar = document.querySelector('.navbar');
+    const sections = document.querySelectorAll('section[id]');
 
     navToggle?.addEventListener('click', () => {
         navToggle.classList.toggle('active');
@@ -14,8 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             navMenu?.classList.remove('active');
         });
     });
-
-    const sections = document.querySelectorAll('section[id]');
 
     function updateActiveLink() {
         const scrollY = window.scrollY;
@@ -36,10 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.addEventListener('scroll', updateActiveLink);
-
-    const navbar = document.querySelector('.navbar');
-
     function updateNavbar() {
         if (window.scrollY > 50) {
             navbar?.classList.add('scrolled');
@@ -48,10 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    window.addEventListener('scroll', updateActiveLink);
     window.addEventListener('scroll', updateNavbar);
-});
+}
 
-function createParticles() {
+function initParticles() {
     const particlesContainer = document.getElementById('particles');
     if (!particlesContainer) return;
 
@@ -105,9 +112,7 @@ function createParticles() {
     document.head.appendChild(style);
 }
 
-document.addEventListener('DOMContentLoaded', createParticles);
-
-document.addEventListener('DOMContentLoaded', () => {
+function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -124,9 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+}
 
-document.addEventListener('DOMContentLoaded', () => {
+function initAnimations() {
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -156,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     `;
     document.head.appendChild(style);
-});
+}
 
 function animateCounter(element, target, duration = 2000) {
     let start = 0;
@@ -175,7 +180,7 @@ function animateCounter(element, target, duration = 2000) {
     updateCounter();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initCounters() {
     const statsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -198,8 +203,68 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroStats) {
         statsObserver.observe(heroStats);
     }
+}
+
+function initMobileTooltips() {
+    if (window.innerWidth > 768) return;
+
+    let overlay = document.querySelector('.mobile-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'mobile-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    document.querySelectorAll('.cmd, .param').forEach(element => {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            document.querySelectorAll('.cmd.active, .param.active').forEach(el => {
+                if (el !== this) el.classList.remove('active');
+            });
+
+            const isActive = this.classList.toggle('active');
+
+            if (isActive) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        });
+    });
+
+    overlay.addEventListener('click', function() {
+        document.querySelectorAll('.cmd.active, .param.active').forEach(el => {
+            el.classList.remove('active');
+        });
+        overlay.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.cmd.active, .param.active').forEach(el => {
+                el.classList.remove('active');
+            });
+            overlay.classList.remove('active');
+        }
+    });
+}
+
+let resizeTimer;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        const overlay = document.querySelector('.mobile-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+        initMobileTooltips();
+    }, 250);
 });
 
-console.log('%c🥭 MangoBot', 'font-size: 24px; font-weight: bold; color: #ff9500;');
-console.log('%cA versatile Discord bot by MangoRage', 'font-size: 14px; color: #a1a1aa;');
-console.log('%cJoin us: https://discord.mangorage.org/', 'font-size: 12px; color: #5865f2;');
+function initConsoleMessage() {
+    console.log('%c🥭 MangoBot', 'font-size: 24px; font-weight: bold; color: #ff9500;');
+    console.log('%cA versatile Discord bot by MangoRage', 'font-size: 14px; color: #a1a1aa;');
+    console.log('%cJoin us: https://discord.mangorage.org/', 'font-size: 12px; color: #5865f2;');
+}
