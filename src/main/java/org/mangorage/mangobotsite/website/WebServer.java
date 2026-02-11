@@ -7,10 +7,9 @@ import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.jetbrains.annotations.NotNull;
-import org.mangorage.mangobotcore.api.plugin.MangoBotCore;
-import org.mangorage.mangobotcore.api.util.log.LogHelper;
+import org.mangorage.bootstrap.api.logging.IDeferredMangoLogger;
+import org.mangorage.bootstrap.api.logging.ILoggerFactory;
 import org.mangorage.mangobotsite.website.filters.RequestInterceptorFilter;
 import org.mangorage.mangobotsite.website.handlers.DefaultErrorHandler;
 import org.mangorage.mangobotsite.website.servlet.CommandsServlet;
@@ -23,6 +22,8 @@ import org.mangorage.mangobotsite.website.util.WebConstants;
 import java.util.EnumSet;
 
 public final class WebServer {
+    private static final IDeferredMangoLogger LOGGER = ILoggerFactory.getDefault().getWrappedProvider("slf4j", WebServer.class);
+
     public static final ResolveString WEBPAGE_INTERNAL = new ResolveString("webpage-internal");
     public static final ResolveString WEBPAGE_ROOT = new ResolveString("webpage-root");
     public static final ResolveString WEBPAGE_PAGE = WEBPAGE_ROOT.resolve("webpage");
@@ -57,7 +58,7 @@ public final class WebServer {
         server.setHandler(handlers);
 
         server.start();
-        LogHelper.info("Webserver Started");
+        LOGGER.get().info("Webserver Started");
         server.join();
     }
 

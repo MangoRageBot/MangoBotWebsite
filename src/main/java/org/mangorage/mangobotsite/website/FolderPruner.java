@@ -2,7 +2,8 @@ package org.mangorage.mangobotsite.website;
 
 
 
-import org.mangorage.mangobotcore.api.util.log.LogHelper;
+import org.mangorage.bootstrap.api.logging.IDeferredMangoLogger;
+import org.mangorage.bootstrap.api.logging.ILoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public final class FolderPruner {
+    private static final IDeferredMangoLogger LOGGER = ILoggerFactory.getDefault().getWrappedProvider("slf4j", FolderPruner.class);
     // Configurable Variables
     private static final String FOLDER_PATH = "webpage-root/uploads"; // Path to your folder
     private static final double MAX_SIZE_GB = 0.2; // Maximum size in GB
@@ -26,7 +28,7 @@ public final class FolderPruner {
     private static void pruneFolder() {
         File folder = new File(FOLDER_PATH);
         if (!folder.exists() || !folder.isDirectory()) {
-            LogHelper.error("Invalid folder path.");
+            LOGGER.get().error("Invalid folder path.");
             return;
         }
 
@@ -36,7 +38,7 @@ public final class FolderPruner {
 
         // If the folder size exceeds the limit, prune the folder
         if (currentSizeBytes > maxSizeBytes) {
-            LogHelper.info("Folder exceeds size limit. Starting pruning process...");
+            LOGGER.get().info("Folder exceeds size limit. Starting pruning process...");
 
             // Get files older than the specified age limit
             List<File> filesToDelete = Arrays.stream(folder.listFiles())
@@ -47,12 +49,12 @@ public final class FolderPruner {
             // Delete files until the folder is within the size limit
             for (File file : filesToDelete) {
                 if (calculateFolderSize(folder) > maxSizeBytes) {
-                    LogHelper.info("Deleting file: " + file.getName());
+                    LOGGER.get().info("Deleting file: " + file.getName());
                     file.delete();
                 }
             }
         } else {
-            LogHelper.info("Folder size is within limit. No pruning needed.");
+            LOGGER.get().info("Folder size is within limit. No pruning needed.");
         }
     }
 

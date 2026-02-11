@@ -10,6 +10,7 @@ module org.mangorage.mangobotwebsite {
     requires net.dv8tion.jda;
     requires com.fasterxml.jackson.databind;
     requires org.mangorage.bootstrap;
+    requires common;
 
     // Files
     opens templates;
