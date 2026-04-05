@@ -48,12 +48,6 @@ extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
-    }
-}
-
 repositories {
     mavenCentral()
     mavenLocal()
