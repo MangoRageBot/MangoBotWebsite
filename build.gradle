@@ -54,12 +54,6 @@ java {
     }
 }
 
-tasks.withType(JavaExec).configureEach {
-    javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(24))
-    })
-}
-
 repositories {
     mavenCentral()
     mavenLocal()
